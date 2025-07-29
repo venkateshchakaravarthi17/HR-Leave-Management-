@@ -1,0 +1,41 @@
+.login-page {
+  background: url('/assets/img/profile.jpg') no-repeat center center;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-box {
+  width: 460px;  
+  background-color: black;
+}
+
+.login-logo a {
+  color: #343a40;
+  font-size: 2.3rem;
+  font-weight: 700;
+}
+
+.card {
+  background-color: rgb(24, 23, 23);
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  min-height: 400px; // Optional: force height
+  border: none;
+}
+
+// 🔹 You can try a colored card (e.g., light blue)
+.card.custom-colored {
+  background-color: #e3f2fd; // Light blue
+  color: #0d47a1;
+}
+
+.login-card-body {
+  padding: 40px 30px;
+}
+
+// Checkbox spacing
+.icheck-primary input[type="checkbox"] {
+  margin-right: 5px;
+}

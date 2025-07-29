@@ -1,0 +1,53 @@
+<!-- Sidebar -->
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <!-- Brand Logo -->
+  <a href="/" class="brand-link">
+    <img src="assets/img/data1st_logo.png" class="img-fluid rounded" alt="AdminLTE Logo" style="height: 100px; width: 150px; padding-left: 50px;"><br><br>
+    <span class="brand-text font-weight-light"><h5>HR Leave Management</h5></span>
+  </a>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <!-- User Panel -->
+    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+      <div class="info">
+        
+        <a href="#" class="d-block">Venkatesh Chakaravarthi</a>
+      </div>
+    </div>
+
+    <!-- SidebarSearch Form -->
+    <div class="form-inline">
+      <div class="input-group" data-widget="sidebar-search">
+        <input class="form-control form-control-sidebar" type="search" placeholder="Search" />
+        <div class="input-group-append">
+          <button class="btn btn-sidebar">
+            <i class="fas fa-search fa-fw"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+        <!-- Dashboard -->
+        <li class="nav-item">
+          <a routerLink="/dashboard" class="nav-link">
+            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <p>Dashboard</p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/users/list']">
+        <i class="nav-icon fas fa-users"></i>
+        <p>User Management</p>
+        </a>
+        </li>
+
+
+        
+
+        

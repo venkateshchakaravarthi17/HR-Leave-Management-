@@ -1,0 +1,70 @@
+.small-box {
+  border-radius: 0.25rem;
+  position: relative;
+  display: block;
+  margin-bottom: 20px;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+
+  .inner {
+    padding: 10px;
+
+    h3 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin: 0 0 10px 0;
+      white-space: nowrap;
+      padding: 0;
+    }
+
+    p {
+      font-size: 1.1rem;
+    }
+  }
+
+  .icon {
+    color: rgba(0, 0, 0, 0.15);
+    z-index: 0;
+    font-size: 70px;
+    position: absolute;
+    top: -10px;
+    right: 10px;
+    transition: all 0.3s linear;
+  }
+
+  .small-box-footer {
+    position: relative;
+    text-align: center;
+    padding: 5px 0;
+    color: rgba(255, 255, 255, 0.8);
+    display: block;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+  }
+}
+
+/* src/app/pages/dashboard/dashboard.component.scss */
+
+/* Optional styling overrides or responsiveness */
+.chart-canvas {
+  height: 250px !important;
+}
+
+#world-map {
+  width: 100%;
+  height: 250px;
+  position: relative;
+}
+
+.chart-canvas {
+  height: 250px !important;
+  width: 100% !important;
+}
+
+
+
+.bg-primary-gradient {
+  background: linear-gradient(to right, #007bff, #00c0ef) !important;
+  color: #fff;
+}
+

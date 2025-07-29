@@ -1,0 +1,47 @@
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h3 class="card-title">User Data Management</h3>
+    <button class="btn btn-primary" style="margin-left: 1410px;" (click)="addUser()">+ New Friend</button>
+  </div>
+  <div class="card-body table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead class="thead-dark">
+        <tr>
+          <th>#</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Department</th>
+          <th>Email</th>
+          <th>Country</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.id }}</td>
+          <td>{{ user.firstName }}</td>
+          <td>{{ user.lastName }}</td>
+          <td>{{ user.department }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.country }}</td>
+          
+<td>
+  <button style="margin-right: 10px;" class="btn btn-primary btn-sm" [routerLink]="['/users/view', user.id]">
+    <i class="fas fa-folder"></i> View
+  </button>
+
+  <button style="margin-right: 10px;" class="btn btn-info btn-sm" (click)="editUser(user.id)">
+    <i class="fas fa-pencil-alt"></i> Edit
+  </button>
+
+  <button class="btn btn-danger btn-sm" (click)="deleteUser(user.id)">
+    <i class="fas fa-trash"></i> Delete
+  </button>
+</td>
+
+
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

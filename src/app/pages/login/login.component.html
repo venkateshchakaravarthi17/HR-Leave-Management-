@@ -1,0 +1,75 @@
+<div class="login-page">
+  <div class="login-box">
+    <!-- Logo -->
+    <div class="login-logo">
+      <img src="assets/img/data1st_logo.png" alt="Company Logo" height="80">
+      <a href="#" style="color: whitesmoke;"><b>Data</b> <b>First</b> <b>Services</b></a>
+    </div>
+
+    <!-- Card -->
+    <div class="card">
+      <div class="card-body login-card-body">
+        <p class="login-box-msg">Sign in to start your session</p>
+
+        <form (ngSubmit)="login()" #loginForm="ngForm">
+          <!-- Username -->
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Username"
+              [(ngModel)]="username"
+              name="username"
+              required
+            />
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-user"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div class="input-group mb-3">
+            <input
+              type="password"
+              class="form-control"
+              placeholder="Password"
+              [(ngModel)]="password"
+              name="password"
+              required
+            />
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Row -->
+          <div class="row">
+            <div class="col-8">
+              <div class="icheck-primary">
+                <input type="checkbox" id="remember" />
+                <label for="remember">Remember Me</label>
+              </div>
+            </div>
+            <div class="col-4">
+              <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+            </div>
+          </div>
+
+          <div *ngIf="error" class="text-danger text-center mt-2">
+            {{ error }}
+          </div>
+        </form>
+
+        <!-- Links -->
+        <a routerLink="/forgot-password">I forgot my password</a><br />
+        <a routerLink="/register" class="text-center">Register a new membership</a>
+
+
+      </div>
+    </div>
+  </div>
+</div>

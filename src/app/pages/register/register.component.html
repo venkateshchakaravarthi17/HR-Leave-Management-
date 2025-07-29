@@ -1,0 +1,78 @@
+<div class="register-page">
+  <div class="register-box">
+    <div class="register-logo">
+      <img src="assets/img/data1st_logo.png" alt="Company Logo" height="80" />
+      <a href="#" style="color: whitesmoke;"><b>Data</b> <b>First</b> <b>Services</b></a>
+    </div>
+
+    <div class="card">
+      <div class="card-body register-card-body">
+        <p class="login-box-msg">Register a new membership</p>
+
+        <form (ngSubmit)="register()" #registerForm="ngForm">
+          <!-- Username -->
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Username"
+              name="username"
+              [(ngModel)]="model.username"
+              required
+            />
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-user"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div class="input-group mb-3">
+            <input
+              type="password"
+              class="form-control"
+              placeholder="Password"
+              name="password"
+              [(ngModel)]="model.password"
+              required
+            />
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="input-group mb-3">
+            <input
+              type="password"
+              class="form-control"
+              placeholder="Confirm Password"
+              name="confirmPassword"
+              [(ngModel)]="model.confirmPassword"
+              required
+            />
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="error" class="text-danger text-center mb-2">{{ error }}</div>
+          <div *ngIf="success" class="text-success text-center mb-2">{{ success }}</div>
+
+          <div class="row">
+            <div class="col-12">
+              <button type="submit" class="btn btn-primary btn-block" [disabled]="registerForm.invalid">Register</button>
+            </div>
+          </div>
+        </form>
+
+        <a routerLink="/login" class="text-center d-block mt-3">I already have a membership</a>
+      </div>
+    </div>
+  </div>
+</div>

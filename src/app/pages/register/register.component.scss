@@ -1,0 +1,70 @@
+// styles for login, register, and forgot-password pages
+.register-page{
+  background: url('/assets/img/profile.jpg') no-repeat center center;
+  background-size: cover;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+.login-box, .register-box {
+  width: 420px;
+  margin: 7% auto;
+  background-color: black;
+}
+
+
+
+.card {
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  border: none;
+}
+
+.card-body {
+  padding: 2rem;
+}
+
+.login-logo, .register-logo {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.input-group-text {
+  background-color: #e9ecef;
+  border: 1px solid #ced4da;
+  border-left: none;
+}
+
+.form-control {
+  border-right: none;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:hover {
+  background-color: #0069d9;
+  border-color: #0062cc;
+}
+
+.login-box-msg, .register-card-body p {
+  text-align: center;
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+a {
+  color: #007bff;
+}
+
+a:hover {
+  text-decoration: underline;
+}
