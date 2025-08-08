@@ -17,7 +17,7 @@ export class UserService {
   users$ = this.usersSubject.asObservable();
 
   getUsers(): User[] {
-    return [...this.users]; // return a copy
+    return [...this.users];
   }
 
   addUser(user: User) {

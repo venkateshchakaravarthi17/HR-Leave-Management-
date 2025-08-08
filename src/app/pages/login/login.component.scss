@@ -21,13 +21,13 @@
   background-color: rgb(24, 23, 23);
   border-radius: 0.75rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  min-height: 400px; // Optional: force height
+  min-height: 400px; 
   border: none;
 }
 
-// 🔹 You can try a colored card (e.g., light blue)
+
 .card.custom-colored {
-  background-color: #e3f2fd; // Light blue
+  background-color: #e3f2fd; 
   color: #0d47a1;
 }
 
@@ -35,7 +35,11 @@
   padding: 40px 30px;
 }
 
-// Checkbox spacing
+
 .icheck-primary input[type="checkbox"] {
   margin-right: 5px;
+}
+
+.login-box-msg{
+  font-size: 20px;
 }

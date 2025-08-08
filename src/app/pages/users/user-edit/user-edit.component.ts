@@ -33,7 +33,7 @@ export class UserEditComponent implements OnInit {
     this.userId = Number(this.route.snapshot.paramMap.get('id'));
     const foundUser = this.userService.getUsers().find(u => u.id === this.userId);
     if (foundUser) {
-      this.user = { ...foundUser }; // create a copy to edit
+      this.user = { ...foundUser }; 
     } else {
       alert('User not found');
       this.router.navigate(['/users/list']);

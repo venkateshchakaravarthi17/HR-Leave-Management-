@@ -19,7 +19,7 @@ export class UserListComponent implements OnInit {
   ngOnInit(): void {
     this.users = this.userService.getUsers();
 
-    // Optional: use this if you want live updates
+    
     this.userService.users$.subscribe(users => {
       this.users = users;
     });

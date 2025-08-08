@@ -12,22 +12,23 @@
         <p class="login-box-msg">Sign in to start your session</p>
 
         <form (ngSubmit)="login()" #loginForm="ngForm">
-          <!-- Username -->
-          <div class="input-group mb-3">
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Username"
-              [(ngModel)]="username"
-              name="username"
-              required
-            />
-            <div class="input-group-append">
-              <div class="input-group-text">
-                <span class="fas fa-user"></span>
-              </div>
-            </div>
-          </div>
+          <!-- Email -->
+<div class="input-group mb-3">
+  <input
+    type="email"
+    class="form-control"
+    placeholder="Email"
+    [(ngModel)]="email"
+    name="email"
+    required
+  />
+  <div class="input-group-append">
+    <div class="input-group-text">
+      <span class="fas fa-envelope"></span>
+    </div>
+  </div>
+</div>
+
 
           <!-- Password -->
           <div class="input-group mb-3">

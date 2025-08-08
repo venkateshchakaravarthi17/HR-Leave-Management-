@@ -17,7 +17,7 @@ export class ForgotPasswordComponent {
   constructor(private router: Router) {}
 
   submit() {
-    // Handle password recovery logic here
+    
     this.message = 'Password reset instructions sent to your email.';
   }
 }

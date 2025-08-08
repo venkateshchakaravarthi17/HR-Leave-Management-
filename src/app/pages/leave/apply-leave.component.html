@@ -1,0 +1,68 @@
+<div class="card">
+  <div class="card-header">
+    <h3 style="font-size: 25px;" class="card-title">Apply for Leave</h3><br><br>
+  </div>
+
+  <form #leaveForm="ngForm" (ngSubmit)="onSubmit(leaveForm)" class="card-body">
+    <div class="mb-3">
+      <label>Employee Name</label>
+      <input class="form-control" name="employeeName" [(ngModel)]="employeeName" required />
+      <div *ngIf="leaveForm.submitted && !employeeName" class="text-danger">Required</div>
+    </div>  
+
+    <div class="mb-3">
+      <label>From Date</label>
+      <input
+        class="form-control"
+        type="date"
+        name="fromDate"
+        [(ngModel)]="fromDate"
+        [min]="today"
+        required
+        (click)="openDatePicker($event)"
+      />
+      <div *ngIf="leaveForm.submitted && !fromDate" class="text-danger">Required</div>
+    </div>
+
+    <div class="mb-3">
+      <label>To Date</label>
+      <input
+        class="form-control"
+        type="date"
+        name="toDate"
+        [(ngModel)]="toDate"
+        [min]="fromDate || today"
+        required
+        (click)="openDatePicker($event)"
+      />
+      <div *ngIf="leaveForm.submitted && !toDate" class="text-danger">Required</div>
+    </div>
+
+    <div class="mb-3 form-check">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        id="halfDay"
+        name="halfDay"
+        [(ngModel)]="isHalfDay"
+      />
+      <label class="form-check-label" for="halfDay">Apply for Half Day</label>
+    </div>
+
+    <div class="mb-3">
+      <label>Reason</label>
+      <app-ckeditor
+        [(data)]="reason"
+        (dataChange)="reason = $event"
+      ></app-ckeditor>
+      <div *ngIf="leaveForm.submitted && !reason" class="text-danger">Required</div>
+    </div>
+
+    <div class="mb-3">
+      <strong>Total Leave Days: </strong> {{ totalDays }}
+    </div>
+
+    <button style="margin-right: 20px;" class="btn btn-primary" type="submit">Submit</button>
+    <button class="btn btn-secondary ms-2" type="button" (click)="cancel()">Cancel</button>
+  </form>
+</div>

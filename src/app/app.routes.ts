@@ -32,7 +32,20 @@ export const routes: Routes = [
       path: 'users/view/:id',
       loadComponent: () =>
         import('./pages/users/user-view/user-view.component').then(m => m.UserViewComponent),
-    }
+    },
+    {
+    path: 'leave/apply',
+    loadComponent: () => import('./pages/leave/apply-leave.component').then(m => m.ApplyLeaveComponent),
+    },
+    {
+    path: 'leave/list',
+    loadComponent: () => import('./pages/leave/leaves-list.component').then(m => m.LeavesListComponent),
+    },
+    {
+    path: 'leave/edit/:id',
+    loadComponent: () => import('./pages/leave/edit-leave.component').then(m => m.EditLeaveComponent),
+    },
+
   ]
 },
 ]

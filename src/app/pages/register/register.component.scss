@@ -1,5 +1,4 @@
-// styles for login, register, and forgot-password pages
-.register-page{
+.register-page {
   background: url('/assets/img/profile.jpg') no-repeat center center;
   background-size: cover;
   height: 100vh;
@@ -8,41 +7,58 @@
   align-items: center;
 }
 
-
-
-.login-box, .register-box {
+.register-box {
   width: 420px;
-  margin: 7% auto;
-  background-color: black;
+  margin: auto;
+  background-color: white;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
-
-
 .card {
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-  border-radius: 0.5rem;
   border: none;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+.register-logo {
+  background-color: black;
+  padding: 1rem;
+  text-align: center;
+}
+
+.register-logo img {
+  display: block;
+  margin: 0 auto 0.5rem;
+}
+
+.brand-text {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+  margin: 0;
 }
 
 .card-body {
   padding: 2rem;
 }
 
-.login-logo, .register-logo {
-  font-size: 2rem;
+.register-box-msg {
   text-align: center;
-  margin-bottom: 1rem;
-  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .input-group-text {
   background-color: #e9ecef;
-  border: 1px solid #ced4da;
   border-left: none;
 }
 
-.form-control {
+.input-group .form-control {
   border-right: none;
+}
+
+.input-group .input-group-append {
+  border-left: none;
 }
 
 .btn-primary {
@@ -55,16 +71,18 @@
   border-color: #0062cc;
 }
 
-.login-box-msg, .register-card-body p {
-  text-align: center;
-  font-size: 1rem;
-  margin-bottom: 1.5rem;
-}
-
 a {
   color: #007bff;
 }
 
 a:hover {
   text-decoration: underline;
+}
+
+.register-box-msg{
+  font-size: 20px;
+}
+
+.brand-text{
+  font-size: 35px;
 }

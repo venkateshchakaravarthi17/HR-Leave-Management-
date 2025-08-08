@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 
 @Component({
   selector: 'app-user-view',
@@ -20,11 +20,11 @@ export class UserViewComponent implements OnInit {
     country: '',
   };
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, private location: Location) {}
 
   ngOnInit(): void {
     this.userId = Number(this.route.snapshot.paramMap.get('id'));
-    // Simulated data fetch — replace with real service/API
+    
     if (this.userId === 1) {
       this.user = {
         firstName: 'Venkatesh',
@@ -79,6 +79,9 @@ export class UserViewComponent implements OnInit {
         country: 'Canada',
       };
     }
+  }
 
+  goBack(): void {
+    this.location.back();
   }
 }

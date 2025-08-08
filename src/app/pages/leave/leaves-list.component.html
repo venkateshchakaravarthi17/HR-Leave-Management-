@@ -1,0 +1,94 @@
+<!--  leave-list.component.html -->
+<div class="card">
+  <div class="card-header">
+    <h3 style=" font-size: 25px;" class="card-title">Leave Requests</h3>
+  </div>
+
+  <div class="card-body">
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Employee Name</th>
+          <th>From</th>
+          <th>To</th>
+          <th>Reason</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let leave of leaves$ | async; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ leave.employeeName }}</td>
+          <td>{{ leave.fromDate }}</td>
+          <td>{{ leave.toDate }}</td>
+          <td>{{ leave.reason }}</td>
+          <td>
+            <span [ngClass]="{
+              'text-warning': leave.status === 'Pending',
+              'text-success': leave.status === 'Approved',
+              'text-danger': leave.status === 'Rejected'
+            }">
+              <i *ngIf="leave.status === 'Pending'" class="fas fa-hourglass-half me-1"></i>
+              <i *ngIf="leave.status === 'Approved'" class="fas fa-check-circle me-1"></i>
+              <i *ngIf="leave.status === 'Rejected'" class="fas fa-times-circle me-1"></i>
+              {{ leave.status }}
+            </span>
+          </td>
+          <td>
+            <div class="d-flex flex-wrap gap-2">
+              <a [routerLink]="['/leave/edit', leave.id]" style="margin-right: 10px; width: 90px;" class="btn btn-sm btn-primary btn-equal">
+                <i class="fas fa-edit me-1"></i> Edit
+              </a>
+
+              <button *ngIf="userRole === 'admin'" style="margin-right: 10px; width: 90px;" class="btn btn-sm btn-danger btn-equal"
+                      (click)="deleteLeave(leave.id!)">
+                <i class="fas fa-trash-alt me-1"></i> Delete
+              </button>
+
+              <ng-container *ngIf="userRole === 'admin'">
+                <button *ngIf="leave.status === 'Pending'" style="margin-right: 10px; width: 90px;" class="btn btn-sm btn-success btn-equal" (click)="updateStatus(leave, 'Approved')">
+                  <i class="fas fa-check me-1"></i> Approve
+                </button>
+
+                <button *ngIf="leave.status === 'Pending'" style="width: 90px; " class="btn btn-sm btn-warning text-white btn-equal" (click)="openRejectModal(leave)">
+                  <i class="fas fa-times me-1"></i> Reject
+                </button>
+
+                <!-- Add 'Rejected' to the condition -->
+                <button *ngIf="leave.status === 'Approved' || leave.status === 'Rejected'" style="width: 90px; "
+                        class="btn btn-sm btn-secondary btn-equal"
+                        (click)="revertLeave(leave)">
+                  <i class="fas fa-undo me-1"></i> Revert
+                </button>
+
+              </ng-container>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Reject Reason Modal -->
+<div class="modal fade" id="rejectModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Reject Leave</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <textarea [(ngModel)]="rejectReason" rows="4" class="form-control" placeholder="Enter rejection reason"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" (click)="modalInstance?.hide()">Cancel</button>
+
+        <button type="button" class="btn btn-danger" (click)="confirmReject()">Reject</button>
+
+      </div>
+    </div>
+  </div>
+</div>

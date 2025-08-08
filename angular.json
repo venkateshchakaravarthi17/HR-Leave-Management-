@@ -45,6 +45,7 @@
   "./node_modules/chart.js/dist/chart.umd.js",
   "./node_modules/moment/min/moment.min.js",
  
+
   "./node_modules/jqvmap/dist/jquery.vmap.min.js",
   "./node_modules/jqvmap/dist/maps/jquery.vmap.usa.js",
   "./node_modules/leaflet/dist/leaflet.js"
