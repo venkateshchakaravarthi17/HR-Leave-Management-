@@ -41,18 +41,15 @@ export class RegisterComponent {
     };
 
     this.auth.register(newUser).subscribe({
-      next: (res: any) => {
+      next: (res) => {
         if (res?.isSuccess) {
           this.toastr.success('Registration successful!');
-        
-          setTimeout(() => {
-            this.router.navigate(['/login']);
-          }, 1500);
+          setTimeout(() => this.router.navigate(['/login']), 1500);
         } else {
           this.toastr.error(res?.message || 'Registration failed.');
         }
       },
-      error: (err: any) => {
+      error: (err) => {
         this.toastr.error('Something went wrong during registration.');
         console.error(err);
       }

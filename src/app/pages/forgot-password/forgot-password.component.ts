@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -13,11 +13,26 @@ import { Router } from '@angular/router';
 export class ForgotPasswordComponent {
   email = '';
   message = '';
+  error = '';
 
-  constructor(private router: Router) {}
+  constructor(private authService: AuthService) {}
 
   submit() {
-    
-    this.message = 'Password reset instructions sent to your email.';
+    this.message = '';
+    this.error = '';
+
+    if (!this.email.trim()) {
+      this.error = 'Please enter a valid email.';
+      return;
+    }
+
+    this.authService.forgotPassword(this.email).subscribe({
+      next: (res: any) => {
+        this.message = res?.message || 'If the email exists, a reset link has been sent.';
+      },
+      error: (err) => {
+        this.error = err.error?.message || 'Something went wrong. Please try again.';
+      }
+    });
   }
 }

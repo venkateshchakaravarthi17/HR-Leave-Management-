@@ -42,28 +42,33 @@
                 <i class="fas fa-edit me-1"></i> Edit
               </a>
 
-              <button *ngIf="userRole === 'admin'" style="margin-right: 10px; width: 90px;" class="btn btn-sm btn-danger btn-equal"
-                      (click)="deleteLeave(leave.id!)">
-                <i class="fas fa-trash-alt me-1"></i> Delete
-              </button>
+              <button *ngIf="userRole === 'admin'" style="margin-right: 10px; width: 90px;" 
+        class="btn btn-sm btn-danger btn-equal"
+        (click)="deleteLeave(leave.id!)">
+  <i class="fas fa-trash-alt me-1"></i> Delete
+</button>
 
-              <ng-container *ngIf="userRole === 'admin'">
-                <button *ngIf="leave.status === 'Pending'" style="margin-right: 10px; width: 90px;" class="btn btn-sm btn-success btn-equal" (click)="updateStatus(leave, 'Approved')">
-                  <i class="fas fa-check me-1"></i> Approve
-                </button>
+<ng-container *ngIf="userRole === 'admin'">
+  <button *ngIf="leave.status === 'Pending'" style="margin-right: 10px; width: 90px;" 
+          class="btn btn-sm btn-success btn-equal" 
+          (click)="updateStatus(leave, 'Approved')">
+    <i class="fas fa-check me-1"></i> Approve
+  </button>
 
-                <button *ngIf="leave.status === 'Pending'" style="width: 90px; " class="btn btn-sm btn-warning text-white btn-equal" (click)="openRejectModal(leave)">
-                  <i class="fas fa-times me-1"></i> Reject
-                </button>
+  <button *ngIf="leave.status === 'Pending'" style="width: 90px;" 
+          class="btn btn-sm btn-warning text-white btn-equal" 
+          (click)="openRejectModal(leave)">
+    <i class="fas fa-times me-1"></i> Reject
+  </button>
 
-                <!-- Add 'Rejected' to the condition -->
-                <button *ngIf="leave.status === 'Approved' || leave.status === 'Rejected'" style="width: 90px; "
-                        class="btn btn-sm btn-secondary btn-equal"
-                        (click)="revertLeave(leave)">
-                  <i class="fas fa-undo me-1"></i> Revert
-                </button>
+  <button *ngIf="leave.status === 'Approved' || leave.status === 'Rejected'" 
+          style="width: 90px;" 
+          class="btn btn-sm btn-secondary btn-equal"
+          (click)="revertLeave(leave)">
+    <i class="fas fa-undo me-1"></i> Revert
+  </button>
+</ng-container>
 
-              </ng-container>
             </div>
           </td>
         </tr>

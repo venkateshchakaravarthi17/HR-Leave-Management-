@@ -1,4 +1,3 @@
-
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -30,7 +29,7 @@ export class LoginComponent {
           this.auth.saveToken(token);
           this.router.navigate(['/dashboard']);
         } else {
-          this.error = 'Login failed. Please try again.';
+          this.error = response?.message || 'Login failed. Please try again.';
         }
       },
       error: (err) => {

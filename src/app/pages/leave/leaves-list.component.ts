@@ -32,7 +32,7 @@ export class LeavesListComponent implements OnInit {
 
   ngOnInit(): void {
     this.getLeaves();
-    this.userRole = this.authService.getUserRole();
+    this.userRole = this.authService.getUserRole().toLowerCase();
   }
 
   getLeaves() {
