@@ -1,0 +1,34 @@
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h3 class="mb-0">Leave Balance</h3>
+    <div class="d-flex gap-2">
+      <select class="form-select" [(ngModel)]="selectedYear" (change)="onYearChange()">
+        <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+      </select>
+      <input type="text" class="form-control" placeholder="Search by leave type..." [(ngModel)]="searchText" (input)="applyFilters()" />
+      <button class="btn btn-secondary" (click)="resetFilters()">Reset</button>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <h5>Total Eligible Leaves: {{ totalEligible }}</h5>
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Leave Type</th>
+          <th>Eligible</th>
+          <th>Used</th>
+          <th>Remaining</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let leave of filteredBalances">
+          <td>{{ leave.leaveTypeName }}</td>
+          <td>{{ leave.defaultAnnualAllocation }}</td>
+          <td>{{ leave.used }}</td>
+          <td>{{ leave.remaining }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

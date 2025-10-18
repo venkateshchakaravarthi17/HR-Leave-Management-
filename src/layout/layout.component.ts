@@ -9,8 +9,14 @@ import { initAdminLTEWidgets } from "../adminlte-init";
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, SidebarComponent, NavbarComponent, FooterComponent],
-  templateUrl: './layout.component.html'
+  imports: [CommonModule, 
+            RouterOutlet,
+            SidebarComponent, 
+            NavbarComponent, 
+            FooterComponent
+          ],
+  templateUrl: './layout.component.html',
+  styleUrls: ['./layout.component.scss']
 })
 export class LayoutComponent implements AfterViewInit {
   ngAfterViewInit(): void {

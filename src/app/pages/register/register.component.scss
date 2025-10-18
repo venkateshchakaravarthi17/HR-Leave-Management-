@@ -1,88 +1,106 @@
+@import '../auth/auth-branding';
+
+/* Common background and centering */
 .register-page {
   background: url('/assets/img/profile.jpg') no-repeat center center;
   background-size: cover;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 20px;
 }
 
+/* Wider box */
 .register-box {
-  width: 420px;
+  width: 100%;
+  max-width: 1200px; /* wider screen */
+  color: black;
   margin: auto;
-  background-color: white;
-  border-radius: 10px;
+}
+
+/* Card styling */
+.card {
+  background-color: rgb(24, 23, 23);
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border: none;
   overflow: hidden;
 }
 
-.card {
-  border: none;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+/* White title header */
+.title-background {
+  background-color: white;
+  padding: 15px 10px;
 }
 
-.register-logo {
-  background-color: black;
-  padding: 1rem;
-  text-align: center;
-}
-
-.register-logo img {
-  display: block;
-  margin: 0 auto 0.5rem;
-}
-
-.brand-text {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: white;
-  margin: 0;
+.company-title {
+  color: #343a40;
+  font-size: 1.6rem;
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-block;
+  line-height: 1.3;
 }
 
 .card-body {
-  padding: 2rem;
+  padding: 30px 20px;
 }
 
 .register-box-msg {
-  text-align: center;
-  font-size: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-.input-group-text {
-  background-color: #e9ecef;
-  border-left: none;
-}
-
-.input-group .form-control {
-  border-right: none;
-}
-
-.input-group .input-group-append {
-  border-left: none;
-}
-
-.btn-primary {
-  background-color: #007bff;
-  border-color: #007bff;
-}
-
-.btn-primary:hover {
-  background-color: #0069d9;
-  border-color: #0062cc;
-}
-
-a {
-  color: #007bff;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-.register-box-msg{
   font-size: 20px;
 }
 
-.brand-text{
-  font-size: 35px;
+/* Input icons */
+.input-group-text {
+  width: 45px;
+  justify-content: center;
+}
+
+/* Buttons */
+.btn-primary,
+button[type='submit'] {
+  background-color: #4cb4ac;
+  border-color: #4cb4ac;
+  color: #fff;
+  font-weight: 600;
+
+  &:hover {
+    background-color: darken(#4cb4ac, 8%);
+    border-color: darken(#4cb4ac, 8%);
+  }
+}
+
+/* Link styling */
+a {
+  color: #4cb4ac;
+}
+
+/* Responsive: stack columns on smaller screens */
+@media (max-width: 992px) {
+  .col-lg-4 {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+}
+
+@media (max-width: 576px) {
+  .col-lg-4,
+  .col-md-6 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+
+.form-label {
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.input-group-text {
+  background-color: #f4f6f9;
+}
+
+input, select {
+  font-size: 0.9rem;
 }

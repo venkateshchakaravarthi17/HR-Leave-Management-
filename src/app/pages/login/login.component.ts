@@ -13,14 +13,17 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-  email = '';
+  workEmail = '';
   password = '';
   error = '';
 
   constructor(private auth: AuthService, private router: Router) {}
 
   login() {
-    const credentials = { email: this.email, password: this.password };
+    const credentials = {
+      workEmail: this.workEmail, // backend expects lowercase
+      password: this.password
+    };
 
     this.auth.login(credentials).subscribe({
       next: (response) => {
@@ -38,4 +41,4 @@ export class LoginComponent {
       }
     });
   }
-}
+}  

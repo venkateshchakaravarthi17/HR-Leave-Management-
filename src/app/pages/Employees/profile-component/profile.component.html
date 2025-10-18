@@ -1,0 +1,71 @@
+<div class="card">
+  <div class="card-body text-center">
+    <img
+      [src]="previewUrl || user.picture || 'assets/img/avatar.png'"
+      alt="Profile Picture"
+      class="img-thumbnail mb-3"
+      width="150"
+    />
+    <h4>{{ user.employeeName }}</h4>
+    <p class="text-muted">{{ user.employeeRole || 'Employee' }}</p>
+  </div>
+
+  <div class="card-body">
+    <div class="row mb-2">
+      <div class="col-sm-3 text-muted">Email</div>
+      <div class="col-sm-9">{{ user.workEmail }}</div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-sm-3 text-muted">Username</div>
+      <div class="col-sm-9">{{ user.userName }}</div>
+    </div>
+  </div>
+
+  <div class="card-footer">
+    <form (ngSubmit)="onSubmit()" #profileForm="ngForm">
+      <div class="form-group">
+        <label for="employeeName">Full Name</label>
+        <input
+          id="employeeName"
+          class="form-control"
+          name="employeeName"
+          [(ngModel)]="user.employeeName"
+          required
+        />
+      </div>
+
+      <div class="form-group mt-2">
+        <label for="workEmail">Work Email</label>
+        <input
+          id="workEmail"
+          class="form-control"
+          name="workEmail"
+          [(ngModel)]="user.workEmail"
+          required
+        />
+      </div>
+
+      <div class="form-group mt-2">
+        <label for="employeeRole">Role</label>
+        <input
+          id="employeeRole"
+          class="form-control"
+          name="employeeRole"
+          [(ngModel)]="user.employeeRole"
+        />
+      </div>
+
+      <div class="form-group mt-3">
+        <label for="picture">Profile Picture</label>
+        <input
+          id="picture"
+          type="file"
+          class="form-control"
+          (change)="onFileSelected($event)"
+        />
+      </div>
+
+      <button class="btn btn-primary mt-3" type="submit">Save Changes</button>
+    </form>
+  </div>
+</div>

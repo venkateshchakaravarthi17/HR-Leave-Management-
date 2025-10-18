@@ -1,0 +1,18 @@
+.profile-user-img {
+  width: 130px;
+  height: 130px;
+  object-fit: cover;
+  border: 3px solid #007bff;
+  padding: 3px;
+  background: #fff;
+  transition: transform 0.2s ease;
+}
+.profile-user-img:hover {
+  transform: scale(1.05);
+}
+.card {
+  border-radius: 8px;
+}
+button {
+  min-width: 100px;
+}

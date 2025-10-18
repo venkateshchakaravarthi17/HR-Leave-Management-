@@ -1,78 +1,125 @@
 <div class="register-page">
-  <div class="register-box">
+  <div class="register-box w-100">
     <div class="card card-outline card-primary">
-      <div class="register-logo">
-        <img src="assets/img/data1st_logo.png" alt="Company Logo" height="80" />
-        <p class="brand-text"><b>Data</b> <b>First</b> <b>Services</b></p>
+      <div class="register-logo text-center">
+        <img src="assets/img/data1st_logo.png" alt="Company Logo" height="90" /><br>
+        <a href="#" class="company-title">
+          <b>Datafirst Solutions</b><br />
+          <b>Analysis Services LLC</b>
+        </a>
       </div>
+
       <div class="card-body">
-        <p class="register-box-msg">Register a new membership</p>
+        <p class="register-box-msg">Register a new employee</p>
 
-        <form #registerForm="ngForm" (ngSubmit)="onSubmit(registerForm)">
-          <div class="input-group mb-3">
-            <input type="text" name="username" class="form-control" placeholder="Username" ngModel required />
-            <div class="input-group-append">
-              <div class="input-group-text"><span class="fas fa-user"></span></div>
-            </div>
+        <form #registerForm="ngForm" (ngSubmit)="onSubmit(registerForm)" class="row g-3">
+
+          <!-- Field Loop -->
+          <div class="col-lg-4 col-md-6 col-12" *ngFor="let field of [
+            {name:'username', type:'text', label:'Username', placeholder:'Enter Username', icon:'user'},
+            {name:'employeename', type:'text', label:'Employee Name', placeholder:'Enter Employee Name', icon:'id-card'},
+            {name:'password', type:'password', label:'Password', placeholder:'Enter Password', icon:'lock'},
+            {name:'confirmpassword', type:'password', label:'Confirm Password', placeholder:'Confirm Password', icon:'lock'},
+            {name:'status', type:'select', label:'Status', placeholder:'Select Status', icon:'info-circle', options:['Active','InActive']},
+            {name:'employmentType', type:'select', label:'Employment Type', placeholder:'Select Employment Type', icon:'briefcase', options:['FTE','Contractor']},
+            {name:'workLocation', type:'text', label:'Work Location', placeholder:'Enter Work Location', icon:'map-marker-alt'},
+            {name:'gender', type:'select', label:'Gender', placeholder:'Select Gender', icon:'venus-mars', options:['Male','Female']},
+            {name:'nationality', type:'text', label:'Nationality', placeholder:'Enter Nationality', icon:'globe'},
+            {name:'dateOfBirth', type:'date', label:'Date of Birth', placeholder:'Select Date of Birth', icon:'calendar-alt'},
+            {name:'maritalStatus', type:'select', label:'Marital Status', placeholder:'Select Marital Status', icon:'heart', options:['Single','Married']},
+            {name:'emiratesIdNumber', type:'text', label:'Emirates ID Number', placeholder:'Enter Emirates ID Number', icon:'id-card'},
+            {name:'passportNumber', type:'text', label:'Passport Number', placeholder:'Enter Passport Number', icon:'passport'},
+            {name:'jobTitle', type:'text', label:'Job Title', placeholder:'Enter Job Title', icon:'briefcase'},
+            {name:'department', type:'text', label:'Department', placeholder:'Enter Department', icon:'building'},
+            {name:'managerName', type:'text', label:'Manager Name', placeholder:'Enter Manager Name', icon:'user-tie'},
+            {name:'dateOfJoining', type:'date', label:'Date of Joining', placeholder:'Select Date of Joining', icon:'calendar-alt'},
+            {name:'personalEmail', type:'email', label:'Personal Email', placeholder:'Enter Personal Email', icon:'envelope'},
+            {name:'workEmail', type:'email', label:'Work Email', placeholder:'Enter Work Email', icon:'envelope'},
+            {name:'personalPhone', type:'text', label:'Personal Phone', placeholder:'Enter Personal Phone', icon:'phone'},
+            {name:'workPhone', type:'text', label:'Work Phone', placeholder:'Enter Work Phone', icon:'phone'},
+            {name:'emergencyContactName', type:'text', label:'Emergency Contact Name', placeholder:'Enter Contact Name', icon:'user-friends'},
+            {name:'emergencyContactRelationship', type:'text', label:'Emergency Contact Relationship', placeholder:'Enter Relationship', icon:'users'},
+            {name:'emergencyContactNumber', type:'text', label:'Emergency Contact Number', placeholder:'Enter Contact Number', icon:'phone'},
+            {name:'currentAddress', type:'text', label:'Current Address', placeholder:'Enter Current Address', icon:'map-marker-alt'},
+            {name:'permanentAddress', type:'text', label:'Permanent Address', placeholder:'Enter Permanent Address', icon:'map-marker-alt'},
+            {name:'countryOfResidence', type:'text', label:'Country Of Residence', placeholder:'Enter Country Of Residence', icon:'globe'},
+            {name:'poBox', type:'text', label:'PO Box', placeholder:'Enter PO Box', icon:'mail-bulk'},
+            {name:'passportExpiryDate', type:'date', label:'Passport Expiry Date', placeholder:'Select Date', icon:'calendar-alt'},
+            {name:'visaExpiryDate', type:'date', label:'Visa Expiry Date', placeholder:'Select Date', icon:'calendar-alt'},
+            {name:'emiratesIdExpiryDate', type:'date', label:'Emirates ID Expiry Date', placeholder:'Select Date', icon:'calendar-alt'},
+            {name:'labourCardExpiryDate', type:'date', label:'Labour Card Expiry Date', placeholder:'Select Date', icon:'calendar-alt'},
+            {name:'insuranceExpiryDate', type:'date', label:'Insurance Expiry Date', placeholder:'Select Date', icon:'calendar-alt'}
+          ]">
+
+            <ng-container [ngSwitch]="field.type">
+
+              <!-- Text / Email / Password / Date -->
+              <div *ngSwitchCase="'text'" class="form-group mb-3">
+                <label [for]="field.name" class="form-label fw-bold">{{field.label}}</label>
+                <div class="input-group">
+                  <input [type]="field.type" [id]="field.name" [name]="field.name" class="form-control"
+                         [placeholder]="field.placeholder" ngModel required />
+                  <div class="input-group-append">
+                    <div class="input-group-text"><span class="fas" [ngClass]="'fa-' + field.icon"></span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div *ngSwitchCase="'email'" class="form-group mb-3">
+                <label [for]="field.name" class="form-label fw-bold">{{field.label}}</label>
+                <div class="input-group">
+                  <input type="email" [id]="field.name" [name]="field.name" class="form-control"
+                         [placeholder]="field.placeholder" ngModel required />
+                  <div class="input-group-append">
+                    <div class="input-group-text"><span class="fas" [ngClass]="'fa-' + field.icon"></span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div *ngSwitchCase="'password'" class="form-group mb-3">
+                <label [for]="field.name" class="form-label fw-bold">{{field.label}}</label>
+                <div class="input-group">
+                  <input type="password" [id]="field.name" [name]="field.name" class="form-control"
+                         [placeholder]="field.placeholder" ngModel required />
+                  <div class="input-group-append">
+                    <div class="input-group-text"><span class="fas" [ngClass]="'fa-' + field.icon"></span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div *ngSwitchCase="'date'" class="form-group mb-3">
+                <label [for]="field.name" class="form-label fw-bold">{{field.label}}</label>
+                <div class="input-group">
+                  <input type="date" [id]="field.name" [name]="field.name" class="form-control"
+                         ngModel required />
+                  <div class="input-group-append">
+                    <div class="input-group-text"><span class="fas" [ngClass]="'fa-' + field.icon"></span></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Select Field -->
+              <div *ngSwitchCase="'select'" class="form-group mb-3">
+                <label [for]="field.name" class="form-label fw-bold">{{field.label}}</label>
+                <div class="input-group">
+                  <select [id]="field.name" [name]="field.name" class="form-control" ngModel required>
+                    <option value="" disabled selected>{{field.placeholder}}</option>
+                    <option *ngFor="let option of field.options" [value]="option">{{option}}</option>
+                  </select>
+                  <div class="input-group-append">
+                    <div class="input-group-text"><span class="fas" [ngClass]="'fa-' + field.icon"></span></div>
+                  </div>
+                </div>
+              </div>
+
+            </ng-container>
           </div>
 
-          <div class="input-group mb-3">
-            <input type="text" name="firstname" class="form-control" placeholder="First Name" ngModel required />
-            <div class="input-group-append">
-              <div class="input-group-text"><span class="fas fa-user-tag"></span></div>
-            </div>
-          </div>
-
-          <div class="input-group mb-3">
-            <input type="text" name="lastname" class="form-control" placeholder="Last Name" ngModel required />
-            <div class="input-group-append">
-              <div class="input-group-text"><span class="fas fa-user-tag"></span></div>
-            </div>
-          </div>
-
-          <div class="input-group mb-3">
-            <input type="email" name="email" class="form-control" placeholder="Email" ngModel required />
-            <div class="input-group-append">
-              <div class="input-group-text"><span class="fas fa-envelope"></span></div>
-            </div>
-          </div>
-
-          <div class="input-group mb-3">
-            <input type="password" name="password" class="form-control" placeholder="Password" ngModel required />
-            <div class="input-group-append">
-              <div class="input-group-text"><span class="fas fa-lock"></span></div>
-            </div>
-          </div>
-
-          <div class="input-group mb-3">
-            <input type="password" name="confirmpassword" class="form-control" placeholder="Confirm Password" ngModel required />
-            <div class="input-group-append">
-              <div class="input-group-text"><span class="fas fa-lock"></span></div>
-            </div>
-          </div>
-
-          <div class="input-group mb-3">
-            <input type="text" name="phonenumber" class="form-control" placeholder="Phone Number" ngModel required />
-            <div class="input-group-append">
-              <div class="input-group-text"><span class="fas fa-phone"></span></div>
-            </div>
-          </div>
-
-          <div class="input-group mb-3">
-            <select name="role" class="form-control" ngModel required>
-              <option value="" disabled selected>Select Role</option>
-              <option value="Employee">Employee</option>
-              <option value="Admin">Admin</option>
-            </select>
-            <div class="input-group-append">
-              <div class="input-group-text"><span class="fas fa-user-shield"></span></div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-12">
-              <button type="submit" class="btn btn-primary btn-block" [disabled]="registerForm.invalid">Register</button>
-            </div>
+          <!-- Submit -->
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary btn-block" [disabled]="registerForm.invalid">
+              Register
+            </button>
           </div>
         </form>
 

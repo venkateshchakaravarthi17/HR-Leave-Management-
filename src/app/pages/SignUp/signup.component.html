@@ -1,0 +1,50 @@
+<!-- <div class="signup-page">
+  <div class="login-box">
+    <div class="card">
+      <div class="card-header title-background text-center">
+        <img src="assets/img/data1st_logo.png" alt="Company Logo" height="90"><br>
+        <a href="#" class="company-title">
+          <b>Datafirst Solutions</b><br />
+          <b>Analysis Services LLC</b>
+        </a>
+      </div>
+      <div class="card-body login-card-body">
+        <p class="login-box-msg">Register as a new employee</p>
+        <form (ngSubmit)="signup()" #signupForm="ngForm">
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Full Name" [(ngModel)]="name" name="name" required />
+            <div class="input-group-append">
+              <div class="input-group-text"><span class="fas fa-user"></span></div>
+            </div>
+          </div>
+
+          <div class="input-group mb-3">
+            <input type="email" class="form-control" placeholder="Email" [(ngModel)]="email" name="email" required />
+            <div class="input-group-append">
+              <div class="input-group-text"><span class="fas fa-envelope"></span></div>
+            </div>
+          </div>
+
+          <div class="input-group mb-3">
+            <input type="password" class="form-control" placeholder="Password" [(ngModel)]="password" name="password" required />
+            <div class="input-group-append">
+              <div class="input-group-text"><span class="fas fa-lock"></span></div>
+            </div>
+          </div>
+
+          <div *ngIf="message" class="text-success mb-2">{{ message }}</div>
+          <div *ngIf="error" class="text-danger mb-2">{{ error }}</div>
+
+          <div class="row">
+            <div class="col-12">
+              <button type="submit" class="btn btn-primary btn-block" [disabled]="isSaving">
+                <span *ngIf="isSaving" class="spinner-border spinner-border-sm me-2"></span>Register
+              </button>
+            </div>
+          </div>
+        </form><br>
+        <p class="mt-3 mb-1"><a routerLink="/login">Login</a></p>
+      </div>
+    </div>
+  </div>
+</div> -->

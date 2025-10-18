@@ -1,0 +1,105 @@
+<!-- src/app/pages/leave/leave-history.component.html -->
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    
+    <h3 class="mb-0">Leave History</h3>
+  </div>
+
+  <div class="card-body">
+    <div class="row mb-3">
+      <div class="col-md-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Search by name or type..."
+          [(ngModel)]="searchText"
+          (input)="applyFilters()"
+        />
+      </div>
+      <div class="col-md-3">
+        <select
+          class="form-control"
+          [(ngModel)]="filterTypeId"
+          (change)="applyFilters()"
+        >
+          <option [ngValue]="''">All Types</option>
+          <option
+            *ngFor="let t of leaveTypes"
+            [value]="t.leaveTypeId ?? t.LeaveTypeId"
+          >
+            {{ t.leaveTypeName ?? t.LeaveTypeName }}
+          </option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <input
+          type="number"
+          class="form-control"
+          placeholder="Year"
+          [(ngModel)]="filterYear"
+          (change)="applyFilters()"
+        />
+      </div>
+      <div class="col-md-2 text-end">
+        <button class="btn btn-secondary" (click)="resetFilters()">Reset</button>
+      </div>
+    </div>
+
+    <table
+      class="table table-bordered table-striped"
+      *ngIf="!loading && filteredLeaves.length"
+    >
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Employee</th>
+          <th>Leave Type</th>
+          <th>From</th>
+          <th>To</th>
+          <th>Days</th>
+          <th>Status</th>
+          <th>Manager Remarks</th>
+          <th *ngIf="isAdmin">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let l of filteredLeaves">
+          <td>{{ l.id }}</td>
+          <td>{{ l.employeeName }}</td>
+          <td>{{ l.leaveType }}</td>
+          <td>{{ l.StartDate | date:'yyyy-MM-dd' }}</td>
+          <td>{{ l.EndDate | date:'yyyy-MM-dd' }}</td>
+          <td>{{ l.leaveDaysUsed || calcDays(l) }}</td>
+          
+          <td>
+            <span
+              class="badge"
+              [ngClass]="{
+                'bg-success': l.status === 'Approved',
+                'bg-danger': l.status === 'Rejected'
+              }"
+            >
+              {{ l.status }}
+            </span>
+          </td>
+          <td>{{ l.managerRemarks || '-' }}</td>
+          <td *ngIf="isAdmin">
+            <button
+              class="btn btn-sm btn-warning"
+              (click)="revertLeave(l.id!)"
+            >
+              Revert
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div
+      *ngIf="!loading && !filteredLeaves.length"
+      class="text-center text-muted my-4"
+    >
+      No history records found.
+    </div>
+  </div>
+</div>

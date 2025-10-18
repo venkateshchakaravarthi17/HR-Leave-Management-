@@ -1,9 +1,6 @@
-
-// Include theming for Angular Material with `mat.theme()`.
-// This Sass mixin will define CSS variables that are used for styling Angular Material
-// components according to the Material 3 design spec.
-// Learn more about theming and how to use it for your application's
-// custom components at https://material.angular.dev/guide/theming
+/* ---------------------------------------
+   ANGULAR MATERIAL THEME
+---------------------------------------- */
 @use '@angular/material' as mat;
 
 html {
@@ -18,72 +15,359 @@ html {
 }
 
 body {
-  // Default the application to a light color theme. This can be changed to
-  // `dark` to enable the dark color theme, or to `light dark` to defer to the
-  // user's system settings.
   color-scheme: light;
-
-  // Set a default background, font and text colors for the application using
-  // Angular Material's system-level CSS variables. Learn more about these
-  // variables at https://material.angular.dev/guide/system-variables
   background-color: var(--mat-sys-surface);
   color: var(--mat-sys-on-surface);
   font: var(--mat-sys-body-medium);
-
-  // Reset the user agent margin.
   margin: 0;
 }
 
-// Include theming for Angular Material with `mat.theme()`.
-// This Sass mixin will define CSS variables that are used for styling Angular Material
-// components according to the Material 3 design spec.
-// Learn more about theming and how to use it for your application's
-// custom components at https://material.angular.dev/guide/theming
-
-
-html {
-  @include mat.theme((
-    color: (
-      primary: mat.$azure-palette,
-      tertiary: mat.$blue-palette,
-    ),
-    typography: Roboto,
-    density: 0,
-  ));
-}
-
-body {
-  // Default the application to a light color theme. This can be changed to
-  // `dark` to enable the dark color theme, or to `light dark` to defer to the
-  // user's system settings.
-  color-scheme: light;
-
-  // Set a default background, font and text colors for the application using
-  // Angular Material's system-level CSS variables. Learn more about these
-  // variables at https://material.angular.dev/guide/system-variables
-  background-color: var(--mat-sys-surface);
-  color: var(--mat-sys-on-surface);
-  font: var(--mat-sys-body-medium);
-
-  // Reset the user agent margin.
-  margin: 0;
-}
-/* You can add global styles to this file, and also import other style files */
-
-html, body { 
+/* ---------------------------------------
+   GLOBAL DEFAULTS
+---------------------------------------- */
+html, body {
   height: 100%;
-  margin: 0; 
+  background-color: #f4f6f9;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+:root {
+  --brand-teal: #4cb4ac;   /* sidebar + navbar background */
+  --brand-dark: #070707;   /* default text */
+  --brand-white: #ffffff;  /* hover/active text */
+}
+
+/* ---------------------------------------
+   ADMINLTE LAYOUT FIX
+---------------------------------------- */
 .wrapper {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
 }
 
-.content-area {
-  flex: 1; /* take up remaining vertical space */
+/* SIDEBAR */
+.main-sidebar {
+  width: 250px !important;
+  background-color: #070707 !important;
+  color: #ffffff !important;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  overflow-y: auto;
+  z-index: 1030;
 }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.main-sidebar .brand-link {
+  background-color: #070707 !important;
+  color: #ffffff !important;
+  text-align: center;
+}
+
+.main-sidebar .brand-link h5 {
+  color: #ffffff !important;
+}
+
+.main-sidebar .nav-link {
+  color: #ffffff !important;
+  font-weight: 500;
+}
+
+.main-sidebar .nav-link.active,
+.main-sidebar .nav-link:hover {
+  background-color: #4cb4ac !important;
+  color: #ffffff !important;
+}
+
+.main-sidebar .user-panel .info a {
+  color: #ffffff !important;
+}
+
+/* ---------------------------------------
+   NAVBAR
+---------------------------------------- */
+.navbar {
+  background-color: var(--brand-teal) !important;
+  color: var(--brand-dark) !important;
+  margin-left: 250px; /* Align with sidebar */
+  transition: all 0.3s ease;
+}
+
+.navbar a,
+.navbar .nav-link {
+  color: var(--brand-dark) !important;
+  font-weight: 500;
+}
+
+.navbar a:hover,
+.navbar .nav-link:hover {
+  color: var(--brand-white) !important;
+}
+
+/* ---------------------------------------
+   CONTENT WRAPPER
+---------------------------------------- */
+.content-wrapper {
+  background-color: #f4f6f9;
+  margin-left: 250px !important; /* Reserve space for sidebar */
+  padding: 20px;
+  min-height: calc(100vh - 56px);
+  transition: all 0.3s ease;
+}
+
+/* ---------------------------------------
+   FOOTER
+---------------------------------------- */
+.footer,
+.main-footer {
+  flex-shrink: 0;
+  background-color: #ffffff;
+  color:#070707;
+  text-align: center;
+  padding: 0.5rem;
+  margin-left: 250px;
+}
+
+/* ---------------------------------------
+   RESPONSIVE
+---------------------------------------- */
+@media (max-width: 991px) {
+  .navbar {
+    margin-left: 0 !important;
+  }
+
+  .content-wrapper {
+    margin-left: 0 !important;
+  }
+
+  .footer,
+  .main-footer {
+    margin-left: 0 !important;
+  }
+}
+
+/* ---------------------------------------
+   SIDEBAR ICON ALIGNMENT & SIZE FIX
+---------------------------------------- */
+.main-sidebar .nav-icon {
+  font-size: 1.25rem !important;   /* Uniform icon size */
+  width: 30px;                     /* Reserve exact width for alignment */
+  height: 30px;                    /* Reserve height for vertical centering */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;         /* Perfectly center icon in the box */
+  margin-right: 10px;              /* Space between icon and text */
+  color: #ffffff !important;       /* Ensure visibility */
+  opacity: 0.9;
+  flex-shrink: 0;                  /* Prevent icon from shrinking */
+}
+
+.main-sidebar .nav-link p {
+  margin: 0;
+  font-size: 0.95rem;
+  vertical-align: middle;
+}
+
+.main-sidebar .nav-link.active .nav-icon,
+.main-sidebar .nav-link:hover .nav-icon {
+  color: #ffffff !important;
+  opacity: 1;
+}
+
+/* ---------------------------------------
+   DASHBOARD WIDGET ICONS
+---------------------------------------- */
+.info-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.info-box .info-box-icon {
+  font-size: 2rem !important;   /* Larger icons */
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  border-radius: 50%;
+  color: #fff;
+  background-color: #4cb4ac;    /* Your brand color */
+}
+
+.info-box .info-box-content {
+  flex: 1;
+  text-align: right;
+}
+
+.info-box .info-box-text {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.info-box .info-box-number {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #000;
+}
+
+.nav-icon {
+  transform: scale(1.2);
+}
+
+/* ==========================================
+   DASHBOARD KPI BOX (small-box) ICON FIX
+========================================== */
+.small-box {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 15px;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.small-box:hover {
+  transform: translateY(-5px);
+}
+
+/* Inner text area */
+.small-box .inner {
+  z-index: 2;
+}
+
+.small-box h3 {
+  font-size: 2rem;           /* larger number text */
+  font-weight: 700;
+  margin: 0;
+}
+
+.small-box p {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* ICON FIX */
+.small-box .icon {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  z-index: 1;
+  font-size: 3.5rem !important;  /* ✅ increase icon size */
+  opacity: 0.3;                  /* light fade background style */
+  color: #fff;
+  line-height: 1;
+}
+
+/* Adjust for smaller screens */
+@media (max-width: 767px) {
+  .small-box .icon {
+    font-size: 2.5rem !important;
+    right: 10px;
+  }
+}
+
+/* Footer link inside small-box */
+.small-box-footer {
+  display: block;
+  text-align: center;
+  padding: 8px 0;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
+}
+
+.small-box .icon::after {
+  content: '';
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.badge {
+  color: black !important; /* black text */
+  font-weight: 100;
+}
+
+/* Sidebar Links */
+.main-sidebar .nav-link {
+  display: flex;               /* Make icon and text align horizontally */
+  align-items: center;         /* Vertically center icon with text */
+  padding: 10px 15px;
+  font-weight: 500;
+  color: #ffffff !important;
+}
+
+.main-sidebar .nav-icon {
+  font-size: 1.25rem !important;  /* Fixed icon size */
+  width: 30px;                     /* Reserve space for icon */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;              /* Space between icon and text */
+  flex-shrink: 0;                  /* Prevent shrinking */
+}
+
+.main-sidebar .nav-link p {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* Reset button alignment to default for AdminLTE */
+.btn {
+  float: none !important;
+  text-align: center !important;
+}
+
+/* Style for user role text */
+.user-role {
+  color: white !important;
+  font-size: 1.1rem;  /* Bigger size */
+  font-weight: 500;
+  text-align: center;  /* Center it */
+  margin-left: 20px;
+  margin-top: 20px;
+}
+
+.btn-primary{
+  text-align: center;
+  
+}
+
+/* src/styles.scss or component scss */
+.action-btn {
+  min-width: 80px;       /* all buttons have same minimum width */
+  margin: 2px 2px 2px 0; /* small margin for spacing */
+  font-size: 0.875rem;   /* AdminLTE 3 button font size */
+  padding: 0.375rem 0.75rem; /* AdminLTE padding */
+  white-space: nowrap;    /* prevent wrapping text */
+}
+
+.text-nowrap .action-btn {
+  display: inline-block; /* keeps buttons in one line */
+}
+
+.nav-sidebar .nav-link.active {
+  background-color: #007bff !important;
+  color: #fff !important;
+}
+
+.nav-sidebar .nav-link.active i {
+  color: #fff !important;
+}
+
+.brand-link {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.content-wrapper {
+  min-height: calc(100vh - 57px);
+}

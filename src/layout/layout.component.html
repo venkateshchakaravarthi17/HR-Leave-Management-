@@ -1,8 +1,26 @@
-<app-navbar></app-navbar>
-<app-sidebar></app-sidebar>
+<!-- layout.component.html -->
+<div class="wrapper">
 
-<div class="content-wrapper">
-  <router-outlet></router-outlet>
+  <!-- Navbar -->
+  <app-navbar></app-navbar>
+
+  <!-- Main Sidebar -->
+  <app-sidebar></app-sidebar>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Main content -->
+    <section class="content pt-3">
+      <div class="container-fluid">
+        <router-outlet></router-outlet>
+      </div>
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <!-- Footer -->
+  <app-footer></app-footer>
+
 </div>
-
-<app-footer></app-footer>
+<!-- ./wrapper -->

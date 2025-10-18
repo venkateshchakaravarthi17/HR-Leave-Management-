@@ -1,0 +1,70 @@
+/* === BRANDING COLORS === */
+$brand-dark: #070707;
+$brand-accent: #4cb4ac;
+$brand-light: #ffffff;
+
+/* Page background */
+.login-page,
+.register-page,
+.forgot-page {
+  background-color: $brand-dark;
+  color: $brand-light;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Boxes */
+.login-box,
+.register-box,
+.login-box .card,
+.register-box .card,
+.forgot-page .card {
+  background-color: $brand-light;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(7,7,7,0.3);
+}
+
+/* Logo text */
+.login-logo a,
+.register-logo p,
+.login-logo a:hover {
+  color: $brand-accent !important;
+  font-weight: 600;
+  text-shadow: 1px 1px 2px rgba(7,7,7,0.5);
+}
+
+/* Inputs */
+.input-group .form-control {
+  border: 1px solid $brand-accent;
+}
+
+.input-group-text {
+  background-color: $brand-accent;
+  color: $brand-light;
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: $brand-accent;
+  border-color: $brand-accent;
+  &:hover {
+    background-color: darken($brand-accent, 8%);
+    border-color: darken($brand-accent, 8%);
+  }
+}
+
+/* Links */
+a {
+  color: $brand-accent;
+  
+}
+
+/* Messages */
+.text-danger {
+  color: #e74c3c !important;
+}
+.text-success {
+  color: #27ae60 !important;
+}

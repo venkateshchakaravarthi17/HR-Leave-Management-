@@ -12,10 +12,10 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./reset-password.component.scss']
 })
 export class ResetPasswordComponent implements OnInit {
-  email = '';
-  token = '';
-  newPassword = '';
-  confirmPassword = '';
+  WorkEmail = '';
+  Token = '';
+  NewPassword = '';
+  ConfirmPassword = '';
   message = '';
   error = '';
 
@@ -26,29 +26,31 @@ export class ResetPasswordComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.email = this.route.snapshot.queryParamMap.get('email') || '';
-    this.token = this.route.snapshot.queryParamMap.get('token') || '';
+    this.WorkEmail = this.route.snapshot.queryParamMap.get('WorkEmail') || '';
+    this.Token = this.route.snapshot.queryParamMap.get('Token') || '';
   }
 
   submit() {
     this.message = '';
     this.error = '';
 
-    if (!this.newPassword || !this.confirmPassword) {
+    if (!this.NewPassword || !this.ConfirmPassword) {
       this.error = 'Please fill in all fields.';
       return;
     }
 
-    if (this.newPassword !== this.confirmPassword) {
+    if (this.NewPassword !== this.ConfirmPassword) {
       this.error = 'Passwords do not match.';
       return;
     }
 
-    this.authService.resetPassword({
-      email: this.email,
-      token: this.token,
-      newPassword: this.newPassword
-    }).subscribe({
+    const payload = {
+      workEmail: this.WorkEmail,
+      token: this.Token,
+      newPassword: this.NewPassword
+    };
+
+    this.authService.resetPassword(payload).subscribe({
       next: (res: any) => {
         this.message = res?.message || 'Password reset successful!';
         setTimeout(() => this.router.navigate(['/login']), 2000);

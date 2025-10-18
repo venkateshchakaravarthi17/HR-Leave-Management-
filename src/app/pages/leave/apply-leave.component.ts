@@ -1,137 +1,166 @@
+// src/app/pages/leave/apply-leave.component.ts
 import { Component, OnInit } from '@angular/core';
-import { NgForm, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Leave, LeaveService } from '../../services/leave.service';
+import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { CkeditorComponent } from '../../shared/ckeditor/ckeditor.component';
+import { LeaveService } from '../../services/leave.service';
+import { CreateLeaveRequestDto } from '../../models/leave.model';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 @Component({
   selector: 'app-apply-leave',
   standalone: true,
-  imports: [CommonModule, FormsModule, CkeditorComponent],
-  templateUrl: './apply-leave.component.html',
+  imports: [CommonModule, FormsModule, CKEditorModule],
+  templateUrl: './apply-leave.component.html'
 })
 export class ApplyLeaveComponent implements OnInit {
-  employeeName = '';
-  fromDate = '';
-  toDate = '';
-  reason = '';
-  isHalfDay: boolean = false;
-  today: string = '';
-  isSubmitting: boolean | undefined;
-  totalDays: number = 0;
+  leaveTypes: any[] = [];
+  today: string = new Date().toISOString().split('T')[0]; // min date for input
+  Editor = ClassicEditor;
+
+  model: CreateLeaveRequestDto = {
+    LeaveTypeId: 0,
+    StartDate: '',
+    EndDate: '',
+    Reason: '',
+    IsStartDateHalfDay: false,
+    IsEndDateHalfDay: false
+  };
+
+  selectedFiles: File[] = [];
+  isSubmitting = false;
 
   constructor(private leaveService: LeaveService, private router: Router) {}
 
   ngOnInit(): void {
-    const currentDate = new Date();
-    this.today = currentDate.toISOString().split('T')[0];
+    this.loadLeaveTypes();
   }
 
-  // strip all HTML tags 
-  stripHtmlTags(html: string): string {
-    const div = document.createElement('div');
-    div.innerHTML = html;
-    return div.textContent || div.innerText || '';
-  }
-
-  onSubmit(form: NgForm) {
-    if (form.valid && this.validateDates()) {
-      this.isSubmitting = true;
-
-      // Converting CKEditor HTML to plain text
-      const plainReason = this.stripHtmlTags(this.reason);
-
-      const leave: Leave = {
-        employeeName: this.employeeName,
-        fromDate: this.fromDate,
-        toDate: this.toDate,
-        reason: plainReason + (this.isHalfDay ? ' (Half Day)' : ''),
-        status: 'Pending',
-        isHalfDay: false
-      };
-
-      this.leaveService.applyLeave(leave).subscribe({
-        next: () => {
-          Swal.fire({
-            icon: 'success',
-            title: 'Leave Applied',
-            text: 'Your leave has been submitted successfully.',
-          }).then(() => {
-            this.isSubmitting = false;
-            this.router.navigate(['/leave/list']);
-          });
-        },
-        error: () => {
-          this.isSubmitting = false;
-          Swal.fire({
-            icon: 'error',
-            title: 'Submission Failed',
-            text: 'Please try again later.',
-          });
-        }
-      });
-    } else {
-      Swal.fire({
-        icon: 'warning',
-        title: 'Invalid Submission',
-        text: 'Please fix the date issues before submitting.',
-      });
-    }
-  }
-
-  validateDates(): boolean {
-    const from = new Date(this.fromDate);
-    const to = new Date(this.toDate);
-    const today = new Date(this.today);
-
-    if ([0, 6].includes(from.getDay())) {
-      Swal.fire('Invalid Date', 'From Date cannot be on a weekend.', 'warning');
-      return false;
-    }
-
-    if ([0, 6].includes(to.getDay())) {
-      Swal.fire('Invalid Date', 'To Date cannot be on a weekend.', 'warning');
-      return false;
-    }
-
-    if (from < today) {
-      Swal.fire('Invalid From Date', 'From Date cannot be in the past.', 'warning');
-      return false;
-    }
-
-    if (to < from) {
-      Swal.fire('Invalid To Date', 'To Date cannot be before From Date.', 'warning');
-      return false;
-    }
-
-    this.calculateTotalDays(from, to);
-    return true;
-  }
-
-  openDatePicker(event: Event) {
-  const input = event.target as HTMLInputElement;
-  input.showPicker?.(); 
-}
-
-
-  calculateTotalDays(from: Date, to: Date): void {
-    let count = 0;
-    const current = new Date(from);
-
-    while (current <= to) {
-      const day = current.getDay();
-      if (day !== 0 && day !== 6) {
-        count++;
+  loadLeaveTypes(): void {
+    this.leaveService.getAllLeaveTypes().subscribe({
+      next: (res) => {
+        this.leaveTypes = res || [];
+      },
+      error: (err) => {
+        console.error('Failed to fetch leave types', err);
+        Swal.fire('Error', 'Could not load leave types.', 'error');
       }
-      current.setDate(current.getDate() + 1);
-    }
-
-    this.totalDays = this.isHalfDay ? 0.5 : count;
+    });
   }
 
-  cancel() {
-    this.router.navigate(['/leave/list']);
+  onFileChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files) {
+      this.selectedFiles = Array.from(input.files);
+    }
+  }
+
+  get isHalfDayAllowed(): boolean {
+    if (!this.model.StartDate || !this.model.EndDate) return false;
+    return this.model.StartDate === this.model.EndDate;
+  }
+
+  // 🔹 Allow datepicker to open when clicking anywhere in input
+  openDatePicker(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    input.showPicker?.(); 
+  }
+
+  // 🔹 Disable weekends and past dates
+  validateDate(event: Event, type: 'start' | 'end'): void {
+    const input = event.target as HTMLInputElement;
+    const selected = new Date(input.value);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (selected < today) {
+      Swal.fire('Invalid Date', 'Past dates are not allowed.', 'warning');
+      if (type === 'start') this.model.StartDate = '';
+      else this.model.EndDate = '';
+      return;
+    }
+
+    const day = selected.getDay(); // 0 = Sunday, 6 = Saturday
+    if (day === 0 || day === 6) {
+      Swal.fire('Invalid Date', 'Weekends (Saturday/Sunday) cannot be selected.', 'warning');
+      if (type === 'start') this.model.StartDate = '';
+      else this.model.EndDate = '';
+    }
+  }
+
+  submit(form: NgForm): void {
+    if (form.invalid) {
+      Swal.fire('Validation', 'Please fill all required fields.', 'warning');
+      return;
+    }
+
+    if (!this.model.LeaveTypeId || this.model.LeaveTypeId <= 0) {
+      Swal.fire('Validation', 'Please select a valid leave type.', 'warning');
+      return;
+    }
+
+    const start = new Date(this.model.StartDate);
+    const end = new Date(this.model.EndDate);
+
+    if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+      Swal.fire('Date Error', 'Please provide valid start and end dates.', 'error');
+      return;
+    }
+
+    if (end < start) {
+      Swal.fire('Date Error', 'End date cannot be before start date.', 'error');
+      return;
+    }
+
+    // Format as yyyy-MM-dd
+    const formattedStart = start.toISOString().split('T')[0];
+    const formattedEnd = end.toISOString().split('T')[0];
+
+    const payload = {
+      LeaveTypeId: Number(this.model.LeaveTypeId),
+      StartDate: formattedStart,
+      EndDate: formattedEnd,
+      Reason: this.stripHtml(this.model.Reason),
+      IsStartDateHalfDay: !!this.model.IsStartDateHalfDay,
+      IsEndDateHalfDay: !!this.model.IsEndDateHalfDay
+    };
+
+    console.log('🟩 Submitting JSON payload:', payload);
+
+    this.isSubmitting = true;
+    this.leaveService.applyLeave(payload).subscribe({
+      next: (res) => {
+        this.isSubmitting = false;
+        if (res?.isSuccess) {
+          Swal.fire('Success', res.message || 'Leave applied successfully.', 'success')
+            .then(() => this.router.navigate(['/leaves']));
+        } else {
+          Swal.fire('Error', res?.message || 'Failed to submit leave.', 'error');
+        }
+      },
+      error: (err) => {
+        this.isSubmitting = false;
+        const msg =
+          err?.error?.Message ||
+          err?.error?.message ||
+          err?.error ||
+          'Server validation failed. Please check all fields.';
+        Swal.fire('Error', msg, 'error');
+      }
+    });
+  }
+
+  resetFileInput(fileInput: HTMLInputElement): void {
+    fileInput.value = '';
+    this.selectedFiles = [];
+  }
+
+  // 🔹 Strip HTML tags from CKEditor output (plain text)
+  private stripHtml(html: string): string {
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = html || '';
+    return tempDiv.textContent || tempDiv.innerText || '';
   }
 }

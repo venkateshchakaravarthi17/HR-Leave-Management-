@@ -2,31 +2,23 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
   <!-- Brand Logo -->
   <a href="/" class="brand-link">
-    <img src="assets/img/data1st_logo.png" class="img-fluid rounded" alt="AdminLTE Logo" style="height: 100px; width: 150px; padding-left: 50px;"><br><br>
-    <span class="brand-text font-weight-light"><h5>HR Leave Management</h5></span>
+    <img src="assets/img/data1st_logo.png" class="img-fluid rounded" alt="AdminLTE Logo" style="height: 100px; width: 150px; margin-left: 50px; margin-top: 20px;"><br><br>
+    <span class="brand-text font-weight-light"  ><h5>HR Leave Management</h5></span>
   </a>
 
   <!-- Sidebar -->
-  <div class="sidebar">
+  <div class="sidebar text-center" style="color: #4cb4ac;">
     <!-- User Panel -->
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
       <div class="info">
-        
-        <a href="#" class="d-block">Venkatesh Chakaravarthi</a>
+        <a href="#" class="d-block" style="font-size: larger; color: white;">{{ userName }}</a>
+        <div class="user-role" style="margin-left: 30px; text-decoration: underline;">{{ userRole }}</div>
       </div>
     </div>
 
-    <!-- SidebarSearch Form -->
-    <div class="form-inline">
-      <div class="input-group" data-widget="sidebar-search">
-        <input class="form-control form-control-sidebar" type="search" placeholder="Search" />
-        <div class="input-group-append">
-          <button class="btn btn-sidebar">
-            <i class="fas fa-search fa-fw"></i>
-          </button>
-        </div>
-      </div>
-    </div>
+
+  
+    
 
     <!-- Sidebar Menu -->
     <nav class="mt-2">
@@ -39,20 +31,50 @@
             <p>Dashboard</p>
           </a>
         </li>
+        <li class="nav-item">
+          <a routerLink="/profile" class="nav-link">
+            <i class="nav-icon fas fa-user"></i>
+            <p>My Profile</p>
+          </a>
+        </li>
+
+        
 
         <li class="nav-item">
-        <a class="nav-link" [routerLink]="['/users/list']">
-        <i class="nav-icon fas fa-users"></i>
-        <p>User Management</p>
-        </a>
+         <a class="nav-link" routerLink="/employees/add" >
+         <i class="nav-icon fas fa-user-plus"></i>
+         <p>Add Employee</p>
+         </a>
         </li>
+
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/employees" >
+            <i class="nav-icon fas fa-users"></i>
+            <p>Employee List</p>
+          </a>
+        </li>
+
+
 
         <li class="nav-item">
         <a class="nav-link" routerLink="/leave/apply"><i class="nav-icon fas fa-calendar-plus"></i> Apply Leave</a>
         </li>
         <li class="nav-item">
-        <a class="nav-link" routerLink="/leave/list"><i class="nav-icon fas fa-list"></i> Leaves List</a>
+        <a class="nav-link" routerLink="/leave/list"><i class="nav-icon fas fa-list"></i> Leaves Status</a>
         </li>
+
+
+        <li class="nav-item">
+        <a class="nav-link" routerLink="/leave/balance">
+          <i class="nav-icon fas fa-balance-scale"></i> Leave Balance
+        </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/leave/history">
+            <i class="nav-icon fas fa-history"></i> Leave History
+          </a>
+        </li>
+
 
 
 

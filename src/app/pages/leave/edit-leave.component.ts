@@ -1,27 +1,37 @@
+// src/app/pages/leave/edit-leave.component.ts
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Leave, LeaveService } from '../../services/leave.service';
-import { NgForm, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { FormsModule, NgForm } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { CkeditorComponent } from '../../shared/ckeditor/ckeditor.component';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { LeaveService } from '../../services/leave.service';
+import { Leave, UpdateLeaveRequestDto } from '../../models/leave.model';
 
 @Component({
   selector: 'app-edit-leave',
   standalone: true,
-  imports: [CommonModule, FormsModule, CkeditorComponent],
+  imports: [CommonModule, FormsModule, CKEditorModule],
   templateUrl: './edit-leave.component.html'
 })
 export class EditLeaveComponent implements OnInit {
-  leaveId: number = 0;
-  employeeName = '';
-  fromDate = '';
-  toDate = '';
-  reason = '';
-  status = '';
-  isHalfDay: boolean = false;
-  today: string = '';
-  totalDays: number = 0;
+  public Editor = ClassicEditor;
+  leaveId!: number;
+  leave!: Leave | null;
+  leaveTypes: any[] = [];
+  selectedFiles: File[] = [];
+  isSubmitting = false;
+  today: string = new Date().toISOString().split('T')[0];
+
+  model: UpdateLeaveRequestDto = {
+    LeaveTypeId: 0,
+    StartDate: '',
+    EndDate: '',
+    Reason: '',
+    IsStartDateHalfDay: false,
+    IsEndDateHalfDay: false
+  };
 
   constructor(
     private route: ActivatedRoute,
@@ -30,114 +40,189 @@ export class EditLeaveComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const currentDate = new Date();
-    this.today = currentDate.toISOString().split('T')[0];
-
     this.leaveId = Number(this.route.snapshot.paramMap.get('id'));
-    this.leaveService.getLeaveById(this.leaveId).subscribe(leave => {
-      if (leave) {
-        this.employeeName = leave.employeeName;
-        this.fromDate = leave.fromDate;
-        this.toDate = leave.toDate;
-        this.reason = leave.reason;
-        this.status = leave.status;
-        this.isHalfDay = leave.isHalfDay ?? false;
+    if (!this.leaveId) {
+      Swal.fire('Error', 'Invalid leave ID.', 'error');
+      this.router.navigate(['/leaves']);
+      return;
+    }
 
-        // Pre-calculate total days for loaded leave
-        this.calculateTotalDays(new Date(this.fromDate), new Date(this.toDate));
+    this.loadLeave();
+    this.loadLeaveTypes();
+  }
+
+  loadLeaveTypes(): void {
+    this.leaveService.getAllLeaveTypes().subscribe({
+      next: (res) => (this.leaveTypes = res || []),
+      error: (err) => {
+        console.error('Failed to fetch leave types', err);
+        Swal.fire('Error', 'Could not load leave types.', 'error');
       }
     });
   }
 
-  stripHtmlTags(html: string): string {
-    const div = document.createElement('div');
-    div.innerHTML = html;
-    return div.textContent || div.innerText || '';
-  }
+  loadLeave(): void {
+    this.leaveService.getLeaveById(this.leaveId).subscribe({
+      next: (l) => {
+        if (!l) {
+          Swal.fire('Not found', 'Leave not found.', 'warning');
+          this.router.navigate(['/leaves']);
+          return;
+        }
 
-  validateDates(): boolean {
-    const from = new Date(this.fromDate);
-    const to = new Date(this.toDate);
-    const today = new Date(this.today);
-
-    if ([0, 6].includes(from.getDay())) {
-      Swal.fire('Invalid Date', 'From Date cannot be on a weekend.', 'warning');
-      return false;
-    }
-
-    if ([0, 6].includes(to.getDay())) {
-      Swal.fire('Invalid Date', 'To Date cannot be on a weekend.', 'warning');
-      return false;
-    }
-
-    if (from < today) {
-      Swal.fire('Invalid From Date', 'From Date cannot be in the past.', 'warning');
-      return false;
-    }
-
-    if (to < from) {
-      Swal.fire('Invalid To Date', 'To Date cannot be before From Date.', 'warning');
-      return false;
-    }
-
-    this.calculateTotalDays(from, to);
-    return true;
-  }
-
-  calculateTotalDays(from: Date, to: Date): void {
-    let count = 0;
-    const current = new Date(from);
-
-    while (current <= to) {
-      const day = current.getDay();
-      if (day !== 0 && day !== 6) {
-        count++;
+        this.leave = l;
+        this.model.LeaveTypeId = Number(l.leaveTypeId);
+        this.model.StartDate = l.StartDate ?? '';
+        this.model.EndDate = l.EndDate ?? '';
+        this.model.Reason = l.Reason ?? '';
+        this.model.IsStartDateHalfDay = !!l.IsStartDateHalfDay;
+        this.model.IsEndDateHalfDay = !!l.IsEndDateHalfDay;
+      },
+      error: () => {
+        Swal.fire('Error', 'Could not load leave details.', 'error');
+        this.router.navigate(['/leaves']);
       }
-      current.setDate(current.getDate() + 1);
-    }
-
-    this.totalDays = this.isHalfDay ? 0.5 : count;
+    });
   }
 
-  openDatePicker(event: Event) {
+  get isHalfDayAllowed(): boolean {
+    if (!this.model.StartDate || !this.model.EndDate) return false;
+    return this.model.StartDate === this.model.EndDate;
+  }
+
+  openDatePicker(event: Event): void {
     const input = event.target as HTMLInputElement;
     input.showPicker?.();
   }
 
-  onSubmit(form: NgForm): void {
-    if (form.valid && this.validateDates()) {
-      const plainReason = this.stripHtmlTags(this.reason);
+  validateDate(event: Event, type: 'start' | 'end'): void {
+    const input = event.target as HTMLInputElement;
+    const selected = new Date(input.value);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-      const updatedLeave: Leave = {
-        id: this.leaveId,
-        employeeName: this.employeeName,
-        fromDate: this.fromDate,
-        toDate: this.toDate,
-        reason: plainReason + (this.isHalfDay ? ' (Half Day)' : ''),
-        status: this.status,
-        isHalfDay: this.isHalfDay
-      };
+    if (selected < today) {
+      Swal.fire('Invalid Date', 'Past dates are not allowed.', 'warning');
+      if (type === 'start') this.model.StartDate = '';
+      else this.model.EndDate = '';
+      return;
+    }
 
-      this.leaveService.updateLeave(this.leaveId, updatedLeave).subscribe(() => {
-        Swal.fire({
-          icon: 'success',
-          title: 'Leave Updated',
-          text: 'The leave has been updated successfully.',
-          confirmButtonText: 'OK'
-        }).then(() => {
-          this.router.navigate(['/leave/list']);
-        });
-      });
-    } else {
-      Swal.fire({
-        icon: 'warning',
-        title: 'Invalid Submission',
-        text: 'Please fix the date issues before submitting.',
-      });
+    const day = selected.getDay();
+    if (day === 0 || day === 6) {
+      Swal.fire('Invalid Date', 'Weekends (Saturday/Sunday) cannot be selected.', 'warning');
+      if (type === 'start') this.model.StartDate = '';
+      else this.model.EndDate = '';
     }
   }
 
-  cancel(): void {
-    this.router.navigate(['/leave/list']);
+  onFileChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files) {
+      this.selectedFiles = Array.from(input.files);
+    }
+  }
+
+  resetFileInput(fileInput: HTMLInputElement): void {
+    fileInput.value = '';
+    this.selectedFiles = [];
+  }
+
+  private stripHtml(html: string): string {
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = html || '';
+    return tempDiv.textContent || tempDiv.innerText || '';
+  }
+
+  update(form: NgForm): void {
+  if (form.invalid) {
+    Swal.fire('Validation', 'Please fill all required fields.', 'warning');
+    return;
+  }
+
+  if (!this.model.LeaveTypeId || this.model.LeaveTypeId <= 0) {
+    Swal.fire('Validation', 'Please select a valid leave type.', 'warning');
+    return;
+  }
+
+  const start = new Date(this.model.StartDate);
+  const end = new Date(this.model.EndDate);
+
+  if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+    Swal.fire('Date Error', 'Please provide valid start and end dates.', 'error');
+    return;
+  }
+
+  if (end < start) {
+    Swal.fire('Date Error', 'End date cannot be before start date.', 'error');
+    return;
+  }
+
+  // Convert dates to yyyy-MM-dd for DateOnly
+  const dto: UpdateLeaveRequestDto = {
+    LeaveTypeId: this.model.LeaveTypeId,
+    StartDate: start.toISOString().split('T')[0],
+    EndDate: end.toISOString().split('T')[0],
+    Reason: this.stripHtml(this.model.Reason),
+    IsStartDateHalfDay: this.model.IsStartDateHalfDay,
+    IsEndDateHalfDay: this.model.IsEndDateHalfDay
+  };
+
+  this.isSubmitting = true;
+  console.log('🟩 Updating leave request (JSON DTO):', dto);
+
+  this.leaveService.updateLeaveRequest(this.leaveId, dto).subscribe({
+    next: (res) => {
+      this.isSubmitting = false;
+      if (res?.isSuccess) {
+        Swal.fire('Success', res.message || 'Leave updated successfully.', 'success')
+          .then(() => this.router.navigate(['/leaves']));
+      } else {
+        Swal.fire('Error', res?.message || 'Failed to update leave.', 'error');
+      }
+    },
+    error: (err) => {
+      this.isSubmitting = false;
+      const msg =
+        err?.error?.Message ||
+        err?.error?.message ||
+        (typeof err?.error === 'string' ? err.error : '') ||
+        'Server validation failed. Please check all fields.';
+      Swal.fire('Error', msg, 'error');
+    }
+  });
+}
+
+
+
+  cancelLeave(): void {
+    if (!this.leaveId) return;
+
+    Swal.fire({
+      title: 'Withdraw leave?',
+      text: 'This will withdraw your pending leave request.',
+      icon: 'warning',
+      showCancelButton: true
+    }).then((r) => {
+      if (!r.isConfirmed) return;
+      this.leaveService.cancelLeaveRequest(this.leaveId).subscribe({
+        next: (res) => {
+          if (res?.isSuccess) {
+            Swal.fire('Cancelled', res.message || 'Leave withdrawn.', 'success')
+              .then(() => this.router.navigate(['/leaves']));
+          } else {
+            Swal.fire('Error', res?.message || 'Failed to withdraw leave.', 'error');
+          }
+        },
+        error: (err) => {
+          const msg = err?.error?.message ?? err?.message ?? 'Server error';
+          Swal.fire('Error', msg, 'error');
+        }
+      });
+    });
+  }
+
+  openFile(url: string): void {
+    window.open(url, '_blank');
   }
 }

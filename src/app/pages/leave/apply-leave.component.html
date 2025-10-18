@@ -1,68 +1,125 @@
 <div class="card">
   <div class="card-header">
-    <h3 style="font-size: 25px;" class="card-title">Apply for Leave</h3><br><br>
+    <h3 class="mb-0">Apply for Leave</h3>
   </div>
 
-  <form #leaveForm="ngForm" (ngSubmit)="onSubmit(leaveForm)" class="card-body">
-    <div class="mb-3">
-      <label>Employee Name</label>
-      <input class="form-control" name="employeeName" [(ngModel)]="employeeName" required />
-      <div *ngIf="leaveForm.submitted && !employeeName" class="text-danger">Required</div>
-    </div>  
+  <div class="card-body">
+    <form #leaveForm="ngForm" (ngSubmit)="submit(leaveForm)" novalidate>
+      <div class="row">
+        <!-- Leave Type -->
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Leave Type</label>
+          <select
+            class="form-control"
+            name="LeaveTypeId"
+            [(ngModel)]="model.LeaveTypeId"
+            required
+          >
+            <option value="" disabled selected>Select leave type</option>
+            <option *ngFor="let lt of leaveTypes" [value]="lt.leaveTypeId || lt.LeaveTypeId">
+              {{ lt.leaveTypeName || lt.LeaveTypeName }}
+            </option>
+          </select>
+        </div>
 
-    <div class="mb-3">
-      <label>From Date</label>
-      <input
-        class="form-control"
-        type="date"
-        name="fromDate"
-        [(ngModel)]="fromDate"
-        [min]="today"
-        required
-        (click)="openDatePicker($event)"
-      />
-      <div *ngIf="leaveForm.submitted && !fromDate" class="text-danger">Required</div>
-    </div>
+        <!-- Start Date -->
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Start Date</label>
+          <input
+            type="date"
+            class="form-control"
+            name="StartDate"
+            [(ngModel)]="model.StartDate"
+            required
+            [min]="today"
+            (click)="openDatePicker($event)"
+            (change)="validateDate($event, 'start')"
+          />
+        </div>
 
-    <div class="mb-3">
-      <label>To Date</label>
-      <input
-        class="form-control"
-        type="date"
-        name="toDate"
-        [(ngModel)]="toDate"
-        [min]="fromDate || today"
-        required
-        (click)="openDatePicker($event)"
-      />
-      <div *ngIf="leaveForm.submitted && !toDate" class="text-danger">Required</div>
-    </div>
+        <!-- End Date -->
+        <div class="col-md-4 mb-3">
+          <label class="form-label">End Date</label>
+          <input
+            type="date"
+            class="form-control"
+            name="EndDate"
+            [(ngModel)]="model.EndDate"
+            required
+            [min]="model.StartDate || today"
+            (click)="openDatePicker($event)"
+            (change)="validateDate($event, 'end')"
+          />
+        </div>
 
-    <div class="mb-3 form-check">
-      <input
-        class="form-check-input"
-        type="checkbox"
-        id="halfDay"
-        name="halfDay"
-        [(ngModel)]="isHalfDay"
-      />
-      <label class="form-check-label" for="halfDay">Apply for Half Day</label>
-    </div>
+        <!-- Reason (CKEditor) -->
+        <div class="col-12 mb-3">
+          <label class="form-label">Reason</label>
+          <ckeditor
+            [(ngModel)]="model.Reason"
+            name="Reason"
+            required
+            minlength="3"
+            [editor]="Editor"
+            [config]="{ placeholder: 'Enter your reason for leave...' }"
+          ></ckeditor>
+        </div>
 
-    <div class="mb-3">
-      <label>Reason</label>
-      <app-ckeditor
-        [(data)]="reason"
-        (dataChange)="reason = $event"
-      ></app-ckeditor>
-      <div *ngIf="leaveForm.submitted && !reason" class="text-danger">Required</div>
-    </div>
+        <!-- File Attachments -->
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Attach Files (optional)</label>
+          <input
+            type="file"
+            class="form-control"
+            (change)="onFileChange($event)"
+            multiple
+            #fileInput
+            accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.txt"
+          />
+          <div class="mt-2" *ngIf="selectedFiles?.length">
+            <div *ngFor="let f of selectedFiles" class="small">
+              {{ f.name }} ({{ (f.size / 1024) | number: '1.0-0' }} KB)
+            </div>
+            <button type="button" class="btn btn-link p-0" (click)="resetFileInput(fileInput)">Clear files</button>
+          </div>
+        </div>
 
-    <div class="mb-3">
-      <strong>Total Leave Days: </strong> {{ totalDays }}
-    </div>
+        <!-- Half-Day Start -->
+        <div class="col-md-3 mb-3 d-flex align-items-center">
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              name="IsStartDateHalfDay"
+              [(ngModel)]="model.IsStartDateHalfDay"
+              [disabled]="!isHalfDayAllowed"
+            />
+            <label class="form-check-label">Start date half day</label>
+          </div>
+        </div>
 
-    <button style="margin-right: 20px;" class="btn btn-primary" type="submit">Submit</button>
-    <button class="btn btn-secondary ms-2" type="button" (click)="cancel()">Cancel</button>
-  </form>
+        <!-- Half-Day End -->
+        <div class="col-md-3 mb-3 d-flex align-items-center">
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              name="IsEndDateHalfDay"
+              [(ngModel)]="model.IsEndDateHalfDay"
+              [disabled]="!isHalfDayAllowed"
+            />
+            <label class="form-check-label">End date half day</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-footer d-flex">
+        <button class="btn btn-secondary me-2" routerLink="/leaves">Cancel</button>
+        <button class="btn btn-primary" type="submit" [disabled]="isSubmitting">
+          <span *ngIf="!isSubmitting">Submit</span>
+          <span *ngIf="isSubmitting">Submitting...</span>
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

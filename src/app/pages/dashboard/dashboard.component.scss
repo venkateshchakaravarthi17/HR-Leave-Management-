@@ -1,70 +1,160 @@
-.small-box {
-  border-radius: 0.25rem;
-  position: relative;
-  display: block;
-  margin-bottom: 20px;
-  box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
-
-  .inner {
-    padding: 10px;
-
-    h3 {
-      font-size: 2.2rem;
-      font-weight: 700;
-      margin: 0 0 10px 0;
-      white-space: nowrap;
-      padding: 0;
-    }
-
-    p {
-      font-size: 1.1rem;
-    }
-  }
-
-  .icon {
-    color: rgba(0, 0, 0, 0.15);
-    z-index: 0;
-    font-size: 70px;
-    position: absolute;
-    top: -10px;
-    right: 10px;
-    transition: all 0.3s linear;
-  }
-
-  .small-box-footer {
-    position: relative;
-    text-align: center;
-    padding: 5px 0;
-    color: rgba(255, 255, 255, 0.8);
-    display: block;
-    z-index: 10;
-    background: rgba(0, 0, 0, 0.1);
-    text-decoration: none;
+/* Custom column width for exactly 5 KPI cards */
+@media (min-width: 1200px) {
+  .col-xl-2-4 {
+    flex: 0 0 20%;
+    max-width: 20%;
   }
 }
 
-/* src/app/pages/dashboard/dashboard.component.scss */
-
-/* Optional styling overrides or responsiveness */
-.chart-canvas {
-  height: 250px !important;
+/* KPI boxes equal height */
+.kpi-box {
+  min-height: 130px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-#world-map {
-  width: 100%;
-  height: 250px;
-  position: relative;
+/* Center text and icons nicely */
+.small-box .inner h3 {
+  font-size: 2rem;
+  font-weight: bold;
 }
 
-.chart-canvas {
-  height: 250px !important;
-  width: 100% !important;
+.small-box .inner p {
+  font-size: 1rem;
 }
 
-
-
-.bg-primary-gradient {
-  background: linear-gradient(to right, #007bff, #00c0ef) !important;
-  color: #fff;
+.small-box .icon {
+  font-size: 2.5rem;
+  opacity: 0.3;
+  position: absolute;
+  right: 15px;
+  top: 15px;
 }
 
+/* ===== BRAND THEME STYLING ===== */
+
+/* General Page Background */
+.content-header,
+.content {
+  //background-color: #ffffff;
+  color: #070707;
+}
+
+/* Breadcrumbs */
+.breadcrumb a {
+  color: #4cb4ac !important;
+}
+.breadcrumb-item.active {
+  color: #999999 !important;
+}
+
+/* KPI Cards */
+.kpi-box {
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(7, 7, 7, 0.1);
+  color: #ffffff;
+  transition: transform 0.2s ease-in-out;
+}
+
+.kpi-box:hover {
+  transform: translateY(-3px);
+}
+
+/* Override AdminLTE bg colors with brand palette */
+.bg-secondary {
+  background-color: #999999 !important;
+}
+.bg-warning {
+  background-color: #f59709 !important;
+}
+.bg-info {
+  background-color: #4cb4ac !important;
+}
+.bg-success {
+  background-color: #070707 !important;
+}
+.bg-danger {
+  background-color: #999999 !important;
+}
+
+/* KPI Titles & Text */
+.kpi-box .inner h3 {
+  font-weight: 700;
+  font-size: 2rem;
+}
+.kpi-box .inner p {
+  color: #ffffff;
+  font-size: 0.95rem;
+}
+
+/* Card Styles */
+.card {
+  border-radius: 10px;
+  border: 1px solid #e6e6e6;
+}
+.card-header {
+  //background-color: #4cb4ac;
+  color: #070707;
+  border-bottom: none;
+  font-weight: 800;
+  
+}
+.card-body {
+  background-color: #ffffff;
+}
+
+/* Tables */
+.table {
+  color: #070707;
+}
+.table thead th {
+  background-color: #999999;
+  color: #070707;
+  border: none;
+}
+.table-hover tbody tr:hover {
+  background-color: #f5f5f5;
+}
+.table-warning {
+  background-color: rgba(245, 151, 9, 0.15) !important;
+}
+
+/* Text colors for statuses */
+.text-success {
+  color: #4cb4ac !important;
+}
+.text-warning {
+  color: #f59709 !important;
+}
+.text-danger {
+  color: #070707 !important;
+}
+
+/* Alert Box (for Local & GST time) */
+.alert-light {
+  //background-color: #4cb4ac !important;
+  color: #070707 !important;
+  border: none;
+  font-weight: 500;
+}
+
+/* Chart Containers */
+.card-body canvas {
+  background: #ffffff;
+}
+
+/* Responsive KPI box column fix */
+@media (max-width: 767px) {
+  .small-box {
+    margin-bottom: 15px;
+  }
+}
+
+.kpi-box .icon {
+  opacity: 0.4;
+  font-size: 60px;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}

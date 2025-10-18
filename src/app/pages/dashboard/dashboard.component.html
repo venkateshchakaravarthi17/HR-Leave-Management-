@@ -1,13 +1,12 @@
-
-
 <section class="content-header">
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h3 style=" font-size: 25px;" class="card-title">Dashboard</h3>
+        
+        <h3 class="mb-0">Dashboard</h3>
       </div>
       <div class="col-sm-6">
-        <ol class="breadcrumb float-sm-right">
+        <ol class="breadcrumb float-sm-right" style="margin-left: 800px;">
           <li class="breadcrumb-item"><a href="#">Home</a></li>
           <li class="breadcrumb-item active">Dashboard</li>
         </ol>
@@ -16,53 +15,257 @@
   </div>
 </section>
 
+<!-- Live Local & GST Time -->
+<div class="alert alert-light mx-3 mb-3 text-dark">
+  <strong>Local:</strong> {{ localTime }} | 
+  <strong>GST:</strong> {{ utcTime }}
+</div>
+
 <section class="content">
   <div class="container-fluid">
-    <!-- Info Boxes -->
-    <div class="row">
-      <div class="col-lg-3 col-6">
-        <div class="small-box bg-info">
-          <div class="inner">
-            <h3>150</h3>
-            <p>Total Employees</p>
-          </div>
-          <div class="icon"><i class="ion ion-bag"></i></div>
-          <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-        </div>
-      </div>
 
-      <div class="col-lg-3 col-6">
-        <div class="small-box bg-success">
-          <div class="inner">
-            <h3>53<sup style="font-size: 20px">%</sup></h3>
-            <p>Employee Rate</p>
-          </div>
-          <div class="icon"><i class="ion ion-stats-bars"></i></div>
-          <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-        </div>
-      </div>
+<!-- KPI Cards -->
+<div class="row text-center">
 
-      <div class="col-lg-3 col-6">
-        <div class="small-box bg-warning">
-          <div class="inner">
-            <h3>10</h3>
-            <p>New Employees</p>
-          </div>
-          <div class="icon"><i class="ion ion-person-add"></i></div>
-          <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+  <!-- Admin KPIs -->
+  <ng-container *ngIf="userRole === 'admin'">
+    <div class="col-xl-2-4 col-lg-2 col-md-4 col-sm-6" *ngIf="totalEmployees !== undefined">
+      <div class="small-box bg-secondary kpi-box">
+        <div class="inner">
+          <h3>{{ totalEmployees }}</h3>
+          <p>Total Employees</p>
         </div>
-      </div>
-
-      <div class="col-lg-3 col-6">
-        <div class="small-box bg-danger">
-          <div class="inner">
-            <h3>5</h3>
-            <p>Employees on Leave</p>
-          </div>
-          <div class="icon"><i class="ion ion-pie-graph"></i></div>
-          <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-        </div>
+        <div class="icon"><i class="ion ion-person-stalker"></i></div>
       </div>
     </div>
+
+    <div class="col-xl-2-4 col-lg-2 col-md-4 col-sm-6" *ngIf="employeesOnLeave !== undefined">
+      <div class="small-box bg-warning kpi-box">
+        <div class="inner">
+          <h3>{{ employeesOnLeave }}</h3>
+          <p>On Leave Today</p>
+        </div>
+        <div class="icon"><i class="fas fa-user-clock"></i></div>
+      </div>
+    </div>
+
+    <div class="col-xl-2-4 col-lg-2 col-md-4 col-sm-6" *ngIf="pendingApprovals !== undefined">
+      <div class="small-box bg-info kpi-box">
+        <div class="inner">
+          <h3>{{ pendingApprovals }}</h3>
+          <p>Pending Approvals</p>
+        </div>
+        <div class="icon"><i class="fas fa-hourglass-half"></i></div>
+      </div>
+    </div>
+
+    <div class="col-xl-2-4 col-lg-2 col-md-4 col-sm-6">
+      <div class="small-box bg-success kpi-box">
+        <div class="inner">
+          <h3>{{ leaveSummary.length }}</h3>
+          <p>Leave Records</p>
+        </div>
+        <div class="icon"><i class="fas fa-calendar-alt"></i></div>
+      </div>
+    </div>
+
+    <div class="col-xl-2-4 col-lg-2 col-md-4 col-sm-6">
+      <div class="small-box bg-danger kpi-box">
+        <div class="inner">
+          <h3>{{ totalEmployees - employeesOnLeave }}</h3>
+          <p>Present Today</p>
+        </div>
+        <div class="icon"><i class="fas fa-user-check"></i></div>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- Employee KPIs -->
+  <ng-container *ngIf="userRole === 'employee'">
+    <div class="col-xl-2-4 col-lg-2 col-md-4 col-sm-6">
+      <div class="small-box bg-success kpi-box">
+        <div class="inner">
+          <h3>{{ eligibleLeaves }}</h3>
+          <p>Eligible Leaves</p>
+        </div>
+        <div class="icon"><i class="fas fa-calendar-check"></i></div>
+      </div>
+    </div>
+
+    <div class="col-xl-2-4 col-lg-2 col-md-4 col-sm-6">
+      <div class="small-box bg-danger kpi-box">
+        <div class="inner">
+          <h3>{{ consumedLeaves }}</h3>
+          <p>Consumed Leaves</p>
+        </div>
+        <div class="icon"><i class="fas fa-calendar-times"></i></div>
+      </div>
+    </div>
+
+    <div class="col-xl-2-4 col-lg-2 col-md-4 col-sm-6">
+      <div class="small-box bg-info kpi-box">
+        <div class="inner">
+          <h3>{{ remainingLeaves }}</h3>
+          <p>Remaining Leaves</p>
+        </div>
+        <div class="icon"><i class="fas fa-calendar"></i></div>
+      </div>
+    </div>
+
+    <div class="col-xl-2-4 col-lg-2 col-md-4 col-sm-6">
+      <div class="small-box bg-warning kpi-box">
+        <div class="inner">
+          <h3>{{ upcomingLeaves.length }}</h3>
+          <p>Upcoming Leaves</p>
+        </div>
+        <div class="icon"><i class="fas fa-plane-departure"></i></div>
+      </div>
+    </div>
+
+    <div class="col-xl-2-4 col-lg-2 col-md-4 col-sm-6">
+      <div class="small-box bg-secondary kpi-box">
+        <div class="inner">
+          <h3>{{ leaveSummary.length }}</h3>
+          <p>Leave History Records</p>
+        </div>
+        <div class="icon"><i class="fas fa-clipboard-list"></i></div>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+
+
+
+    <!-- Charts Section -->
+    <div class="row">
+      <ng-container *ngIf="userRole === 'employee'">
+        <div class="col-lg-6 col-12">
+          <div class="card">
+            <div class="card-header"><h3 class="card-title">Leave Balance</h3></div>
+            <div class="card-body" style="height:300px;">
+              <canvas id="availableLeavesChart"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 col-12">
+          <div class="card">
+            <div class="card-header"><h3 class="card-title">Upcoming Leaves</h3></div>
+            <div class="card-body" style="height:300px;">
+              <canvas id="upcomingLeavesChart"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header"><h3 class="card-title">Leave History Summary</h3></div>
+            <div class="card-body" style="height:350px;">
+              <canvas id="leaveSummaryChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="userRole === 'admin'">
+        <div class="col-lg-6 col-12">
+          <div class="card">
+            <div class="card-header"><h3 class="card-title">Leave Overview</h3></div>
+            <div class="card-body" style="height:350px;">
+              <canvas id="leaveChart"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 col-12">
+          <div class="card">
+            <div class="card-header"><h3 class="card-title">Employee Leave Distribution</h3></div>
+            <div class="card-body" style="height:350px;">
+              <canvas id="employeeLeaveGraph"></canvas>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+
+    <!-- Tables Section -->
+<!-- Admin Upcoming Leaves Table -->
+<div *ngIf="userRole === 'admin'" class="col-12">
+  <div class="card">
+    <div class="card-header"><h3 class="card-title">Upcoming Leaves</h3></div>
+    <div class="card-body table-responsive p-0" style="max-height:400px;">
+      <table class="table table-hover text-nowrap">
+        <thead>
+          <tr>
+            <th>Employee Name</th>
+            <th>Leave Type</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let l of leaves | slice:0:10"
+              [ngClass]="{'table-warning': upcomingLeaves.includes(l)}">
+            <td>{{ l.employeeName }}</td>
+            <td>{{ l.leaveType }}</td>
+            <td>{{ l.fromDate | date:'dd-MMM-yyyy' }}</td>
+            <td>{{ l.toDate | date:'dd-MMM-yyyy' }}</td>
+            <td>
+              <span [ngClass]="{
+                'text-success': l.status === 'approved',
+                'text-warning': l.status === 'pending',
+                'text-danger': l.status === 'rejected'
+              }">
+                {{ l.status | titlecase }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Employee Leave History Table -->
+<div *ngIf="userRole === 'employee'" class="col-12">
+  <div class="card">
+    <div class="card-header"><h3 class="card-title">My Leave History</h3></div>
+    <div class="card-body table-responsive p-0" style="max-height:400px;">
+      <table class="table table-hover text-nowrap">
+        <thead>
+          <tr>
+            <th>Leave Type</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Days Used</th>
+            <th>Status</th>
+            <th>Manager Remarks</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let l of leaves"
+              [ngClass]="{'table-warning': upcomingLeaves.includes(l)}">
+            <td>{{ l.leaveType }}</td>
+            <td>{{ l.fromDate ? (l.fromDate | date:'dd-MMM-yyyy') : '-' }}</td>
+            <td>{{ l.toDate ? (l.toDate | date:'dd-MMM-yyyy') : '-' }}</td>
+            <td>{{ l.leaveDaysUsed }}</td>
+            <td>
+              <span [ngClass]="{
+                'text-success': l.status === 'approved',
+                'text-warning': l.status === 'pending',
+                'text-danger': l.status === 'rejected'
+              }">
+                {{ l.status | titlecase }}
+              </span>
+            </td>
+            <td>{{ l.managerRemarks }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+
   </div>
 </section>
