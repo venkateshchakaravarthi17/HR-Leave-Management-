@@ -1,4 +1,5 @@
 export interface Employee {
+  numberOfChildren: string;
   id: number | null | undefined;
   employeeId?: number;
   userId?: string;       

@@ -18,28 +18,54 @@ export class NavbarComponent implements AfterViewInit {
   loading: boolean = false;
   changePasswordModal: bootstrap.Modal | null = null;
 
+  // Password strength meter
+  passwordStrength: number = 0;
+  passwordStrengthText: string = '';
+
   constructor(private auth: AuthService, private toastr: ToastrService) {}
 
   ngAfterViewInit(): void {
     const modalEl = document.getElementById('changePasswordModal');
     if (modalEl) this.changePasswordModal = new bootstrap.Modal(modalEl);
-    
   }
 
   toggleSidebar() {
-  document.body.classList.toggle('sidebar-collapse');
-}
-
+    document.body.classList.toggle('sidebar-collapse');
+  }
 
   openChangePassword() {
     if (this.changePasswordModal) this.changePasswordModal.show();
     this.currentPassword = '';
     this.newPassword = '';
     this.confirmPassword = '';
+    this.passwordStrength = 0;
+    this.passwordStrengthText = '';
   }
 
   closeChangePassword() {
     if (this.changePasswordModal) this.changePasswordModal.hide();
+  }
+
+  /** Password Strength Checker */
+  checkPasswordStrength() {
+    const pwd = this.newPassword || '';
+    let score = 0;
+
+    if (pwd.length >= 6) score += 20;
+    if (/[A-Z]/.test(pwd)) score += 20;
+    if (/[a-z]/.test(pwd)) score += 20;
+    if (/\d/.test(pwd)) score += 20;
+    if (/[@$!%*?&]/.test(pwd)) score += 20;
+
+    this.passwordStrength = score;
+
+    if (score <= 40) {
+      this.passwordStrengthText = 'Weak';
+    } else if (score <= 80) {
+      this.passwordStrengthText = 'Medium';
+    } else {
+      this.passwordStrengthText = 'Strong';
+    }
   }
 
   logout() {
@@ -47,51 +73,48 @@ export class NavbarComponent implements AfterViewInit {
   }
 
   changePassword(form: NgForm) {
-  console.log('🔹 Change password clicked');
+    if (form.invalid) {
+      this.toastr.warning('Please fill all fields correctly!');
+      return;
+    }
 
-  if (form.invalid) {
-    this.toastr.warning('Please fill all fields correctly!');
-    return;
-  }
+    if (this.newPassword !== this.confirmPassword) {
+      this.toastr.error('New Password and Confirm Password do not match!');
+      return;
+    }
 
-  if (this.newPassword !== this.confirmPassword) {
-    this.toastr.error('New Password and Confirm Password do not match!');
-    return;
-  }
+    const currentUser = this.auth.getCurrentUser();
+    if (!currentUser?.workEmail) {
+      this.toastr.error('User email not found. Please login again.');
+      return;
+    }
 
-  const currentUser = this.auth.getCurrentUser();
-  console.log('Current user:', currentUser);
+    this.loading = true;
 
-  if (!currentUser) {
-    this.toastr.error('User not found. Please login again.');
-    return;
-  }
-
-  this.loading = true;
-
-  
-  this.auth
-    .changePassword({
+    const payload = {
+      workEmail: currentUser.workEmail as string,
       currentPassword: this.currentPassword,
       newPassword: this.newPassword
-    })
-    .subscribe({
+    };
+
+    this.auth.changePassword(payload).subscribe({
       next: (res) => {
+        this.loading = false;
         if (res?.isSuccess) {
-          this.toastr.success('Password changed successfully!');
+          this.toastr.success(res.message || 'Password changed successfully!');
           this.closeChangePassword();
+          form.resetForm();
+          this.passwordStrength = 0;
+          this.passwordStrengthText = '';
         } else {
           this.toastr.error(res?.message || 'Failed to change password.');
         }
-        this.loading = false;
       },
       error: (err) => {
+        this.loading = false;
         console.error('Change password error:', err);
         this.toastr.error(err.error?.message || 'Something went wrong.');
-        this.loading = false;
       }
     });
-}
-
-
+  }
 }

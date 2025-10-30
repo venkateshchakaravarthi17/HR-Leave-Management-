@@ -12,7 +12,8 @@ import { AuthService } from '../../services/auth.service';
   selector: 'app-leaves-list',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
-  templateUrl: './leaves-list.component.html'
+  templateUrl: './leaves-list.component.html',
+  styleUrl: './leaves-list.component.scss'
 })
 export class LeavesListComponent implements OnInit {
   leaves: Leave[] = [];

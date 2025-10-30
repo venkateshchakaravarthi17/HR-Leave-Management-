@@ -1,9 +1,35 @@
-.btn-equal {
-  width: 110px;
-  text-align: center;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+/* --- Force override AdminLTE/Bootstrap badge colors --- */
+:host ::ng-deep .badge {
+  font-size: 0.85rem;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-weight: 500;
 }
 
+/* Light Yellow - Pending */
+:host ::ng-deep .bg-warning {
+  background-color: #fff8e1 !important;
+  color: #8a6d3b !important;
+  border: 1px solid #ffe58f !important;
+}
 
+/* Light Green - Approved */
+:host ::ng-deep .bg-success {
+  background-color: #e6f4ea !important;
+  color: #2e7d32 !important;
+  border: 1px solid #b7e1cd !important;
+}
+
+/* Light Red - Rejected */
+:host ::ng-deep .bg-danger {
+  background-color: #fdecea !important;
+  color: #c62828 !important;
+  border: 1px solid #f5c2c7 !important;
+}
+
+/* Light Gray - Cancelled */
+:host ::ng-deep .bg-secondary {
+  background-color: #f1f3f4 !important;
+  color: #495057 !important;
+  border: 1px solid #dee2e6 !important;
+}

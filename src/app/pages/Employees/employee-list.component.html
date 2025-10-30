@@ -2,11 +2,18 @@
   <div class="card-header d-flex justify-content-between align-items-center">
     <!-- <h3 class="card-title mb-0">Employee List</h3> -->
     <h3 class="mb-0">Employee List</h3>
-    <!-- Only Admin can see Add button -->
-    <button *ngIf="isAdmin" class="btn btn-primary btn-sm" (click)="addEmployee()">
-      <i class="fas fa-user-plus"></i> Add Employee
-    </button>
-  </div>
+    <!-- Export button: visible only for Admin -->
+      <button *ngIf="isAdmin" class="btn btn-success btn-sm me-2" (click)="exportToExcel()">
+        <i class="fas fa-file-excel"></i> Export to Excel
+      </button>
+
+      <!-- Add Employee button: visible only for Admin -->
+      <button *ngIf="isAdmin" class="btn btn-primary btn-sm" (click)="addEmployee()">
+        <i class="fas fa-user-plus"></i> Add Employee
+      </button>
+    </div>
+  
+
   <br /><br />
 
   <div class="card-body p-0">

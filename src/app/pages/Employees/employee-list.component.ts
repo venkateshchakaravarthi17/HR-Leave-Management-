@@ -89,4 +89,25 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  exportToExcel(): void {
+  if (!this.isAdmin) return; // Only Admin can export
+
+  this.employeeService.exportToExcel().subscribe({
+    next: (blob) => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Employee_List.xlsx';
+      a.click();
+      window.URL.revokeObjectURL(url);
+    },
+    error: (err) => {
+      console.error('Error exporting Excel file', err);
+    }
+  });
+}
+
+
+
 }

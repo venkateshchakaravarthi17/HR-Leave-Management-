@@ -46,7 +46,7 @@ html, body {
 
 /* SIDEBAR */
 .main-sidebar {
-  width: 250px !important;
+  width: 280px !important;
   background-color: #070707 !important;
   color: #ffffff !important;
   position: fixed;
@@ -61,10 +61,13 @@ html, body {
   background-color: #070707 !important;
   color: #ffffff !important;
   text-align: center;
+  
 }
 
 .main-sidebar .brand-link h5 {
   color: #ffffff !important;
+  font-weight: bolder;
+  font-size: 22px;
 }
 
 .main-sidebar .nav-link {
@@ -80,13 +83,14 @@ html, body {
 
 .main-sidebar .user-panel .info a {
   color: #ffffff !important;
+  margin-right: 10px;
 }
 
 /* ---------------------------------------
    NAVBAR
 ---------------------------------------- */
 .navbar {
-  background-color: var(--brand-teal) !important;
+  background-color: #999999 !important;
   color: var(--brand-dark) !important;
   margin-left: 250px; /* Align with sidebar */
   transition: all 0.3s ease;
@@ -94,9 +98,12 @@ html, body {
 
 .navbar a,
 .navbar .nav-link {
-  color: var(--brand-dark) !important;
+  color: white !important;
   font-weight: 500;
+  margin-left: 28px; /* reduced from 30px for tighter spacing */
+  padding: 5px 8px; /* optional: add balanced spacing */
 }
+
 
 .navbar a:hover,
 .navbar .nav-link:hover {
@@ -366,8 +373,10 @@ html, body {
 
 .brand-link {
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  
 }
 
 .content-wrapper {
   min-height: calc(100vh - 57px);
 }
+

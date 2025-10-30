@@ -12,6 +12,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  height: 160px;
 }
 
 /* Center text and icons nicely */
@@ -37,7 +38,6 @@
 /* General Page Background */
 .content-header,
 .content {
-  //background-color: #ffffff;
   color: #070707;
 }
 
@@ -69,7 +69,7 @@
   background-color: #f59709 !important;
 }
 .bg-info {
-  background-color: #4cb4ac !important;
+  background-color: #f59709 !important;
 }
 .bg-success {
   background-color: #070707 !important;
@@ -92,13 +92,12 @@
 .card {
   border-radius: 10px;
   border: 1px solid #e6e6e6;
+  transition: all 0.25s ease;
 }
 .card-header {
-  //background-color: #4cb4ac;
   color: #070707;
   border-bottom: none;
   font-weight: 800;
-  
 }
 .card-body {
   background-color: #ffffff;
@@ -123,17 +122,19 @@
 /* Text colors for statuses */
 .text-success {
   color: #4cb4ac !important;
+  font-weight: bold;
 }
 .text-warning {
   color: #f59709 !important;
+  font-weight: bold;
 }
 .text-danger {
   color: #070707 !important;
+  font-weight: bold;
 }
 
 /* Alert Box (for Local & GST time) */
 .alert-light {
-  //background-color: #4cb4ac !important;
   color: #070707 !important;
   border: none;
   font-weight: 500;
@@ -157,4 +158,84 @@
   position: absolute;
   top: 15px;
   right: 15px;
+}
+
+.card-maximized {
+  position: fixed !important;
+  top: 10px !important;
+  left: 10px !important;
+  right: 10px !important;
+  bottom: 10px !important;
+  width: calc(100% - 20px) !important;
+  height: calc(100% - 20px) !important;
+  z-index: 2000 !important;
+  margin: 0 !important;
+  border-radius: 10px !important;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3) !important;
+  overflow: auto !important;
+}
+
+.card-maximized .card-body {
+  height: calc(100% - 60px) !important;
+  min-height: 0 !important;
+  padding: 16px !important;
+}
+
+.card-maximized .card-header {
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 2100;
+}
+
+/* keep a .maximized state too (used by toggleMaximize) */
+.card.maximized {
+  position: fixed !important;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  width: calc(100% - 20px) !important;
+  height: calc(100% - 20px) !important;
+  z-index: 2000 !important;
+  margin: 0 !important;
+  border-radius: 10px !important;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3) !important;
+  overflow: auto !important;
+}
+
+.card.maximized .card-body {
+  height: calc(100% - 60px) !important;
+  min-height: 0 !important;
+  padding: 16px !important;
+}
+.card.maximized .card-header {
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 2100;
+}
+
+/* Ensure button icon shows compress when maximized: we toggle icons in TS; this is fallback */
+.card.maximized .btn-tool i.fa-expand {
+  display: none;
+}
+.card.maximized .btn-tool i.fa-compress {
+  display: inline-block;
+}
+
+/* Chart.js legend dots (works for ChartJS usePointStyle option too) */
+.chartjs-legend li span,
+.chartjs-render-monitor + .chartjs-legend li span {
+  border-radius: 50% !important;
+  width: 12px !important;
+  height: 12px !important;
+  display: inline-block !important;
+  margin-right: 8px !important;
+}
+
+/* Card title style */
+.card-title {
+  font-size: large;
+  font-weight: bold;
 }

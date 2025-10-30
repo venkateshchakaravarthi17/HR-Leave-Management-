@@ -1,7 +1,6 @@
 <div class="card shadow-sm"> 
   <div class="card-header">
-    
-    <h3 class="mb-0">{{ isEdit ? 'Edit Employee' : 'Add Employee' }} </h3>
+    <h3 class="mb-0">{{ isEdit ? 'Edit Employee' : 'Add Employee' }}</h3>
   </div>
 
   <form [formGroup]="form" (ngSubmit)="onSubmit()" class="card-body">
@@ -59,14 +58,14 @@
         <select formControlName="Status" class="form-control">
           <option value="">Select Status</option>
           <option value="Active">Active</option>
-          <option value="InActive">InActive</option>
+          <option value="InActive">Inactive</option>
         </select>
       </div>
 
       <div class="col-md-4">
         <label>Employment Type</label>
         <select formControlName="EmploymentType" class="form-control">
-          <option value="">Select Type</option>
+          <option value="">Select Employment Type</option>
           <option value="FTE">FTE</option>
           <option value="Contract">Contract</option>
         </select>
@@ -78,22 +77,22 @@
     <div class="row">
       <div class="col-md-4">
         <label>Job Title</label>
-        <input formControlName="JobTitle" class="form-control" />
+        <input formControlName="JobTitle" class="form-control" placeholder="Enter Job Title" />
       </div>
       <div class="col-md-4">
         <label>Department</label>
-        <input formControlName="Department" class="form-control" />
+        <input formControlName="Department" class="form-control" placeholder="Enter Department" />
       </div>
       <div class="col-md-4">
         <label>Manager Name</label>
-        <input formControlName="ManagerName" class="form-control" />
+        <input formControlName="ManagerName" class="form-control" placeholder="Enter Manager Name" />
       </div>
     </div>
 
     <div class="row mt-2">
       <div class="col-md-4">
         <label>Date of Joining</label>
-        <input type="date" formControlName="DateOfJoining" class="form-control" />
+        <input type="date" formControlName="DateOfJoining" class="form-control" (click)="openDatePicker($event)" />
       </div>
     </div>
 
@@ -102,15 +101,15 @@
     <div class="row">
       <div class="col-md-4">
         <label>Contract By</label>
-        <input formControlName="ContractBy" class="form-control" />
+        <input formControlName="ContractBy" class="form-control" placeholder="Enter Contract By" />
       </div>
       <div class="col-md-4">
         <label>Contract End Date</label>
-        <input type="date" formControlName="ContractEndDate" class="form-control" />
+        <input type="date" formControlName="ContractEndDate" class="form-control" (click)="openDatePicker($event)" />
       </div>
       <div class="col-md-4">
         <label>Work Location</label>
-        <input formControlName="WorkLocation" class="form-control" />
+        <input formControlName="WorkLocation" class="form-control" placeholder="Enter Work Location" />
       </div>
     </div>
 
@@ -119,69 +118,103 @@
     <div class="row">
       <div class="col-md-4">
         <label>Gender</label>
-        <input formControlName="Gender" class="form-control" />
+        <select formControlName="Gender" class="form-control">
+          <option value="">Select Gender</option>
+          <option>Male</option>
+          <option>Female</option>
+          <option>Other</option>
+        </select>
       </div>
+
       <div class="col-md-4">
         <label>Nationality</label>
-        <input formControlName="Nationality" class="form-control" />
+        <select formControlName="Nationality" class="form-control">
+          <option value="">Select Nationality</option>
+          <option *ngFor="let country of countries" [value]="country">{{ country }}</option>
+        </select>
       </div>
+
       <div class="col-md-4">
         <label>Date of Birth</label>
-        <input type="date" formControlName="DateOfBirth" class="form-control" />
+        <input type="date" formControlName="DateOfBirth" class="form-control" (click)="openDatePicker($event)" />
       </div>
     </div>
 
     <div class="row mt-2">
       <div class="col-md-4">
         <label>Marital Status</label>
-        <input formControlName="MaritalStatus" class="form-control" />
+        <select formControlName="MaritalStatus" class="form-control">
+          <option value="">Select Marital Status</option>
+          <option>Single</option>
+          <option>Married</option>
+          <option>Divorced</option>
+          <option>Widowed</option>
+        </select>
       </div>
       <div class="col-md-4">
         <label>Emirates ID Number</label>
-        <input formControlName="EmiratesIdNumber" class="form-control" />
+        <input formControlName="EmiratesIdNumber" class="form-control" placeholder="Enter Emirates ID" />
       </div>
       <div class="col-md-4">
         <label>Passport Number</label>
-        <input formControlName="PassportNumber" class="form-control" />
+        <input formControlName="PassportNumber" class="form-control" placeholder="Enter Passport Number" />
       </div>
     </div>
+
+    <div class="row mt-2" *ngIf="['Married', 'Widowed', 'Divorced'].includes(form.get('MaritalStatus')?.value)">
+  <div class="col-md-4">
+    <label>Number of Children</label>
+    <input type="number" formControlName="NumberOfChildren" class="form-control" placeholder="Enter Number of Children" min="0" />
+    <div *ngIf="form.get('NumberOfChildren')?.invalid && form.get('NumberOfChildren')?.touched" class="text-danger">
+      Please enter number of children
+    </div>
+  </div>
+</div>
+
 
     <!-- Contact Info -->
     <h5 class="mt-3">Contact Info</h5>
     <div class="row">
       <div class="col-md-4">
         <label>Personal Email</label>
-        <input formControlName="PersonalEmail" class="form-control" />
+        <input formControlName="PersonalEmail" class="form-control" placeholder="Enter Personal Email" />
       </div>
       <div class="col-md-4">
         <label>Work Email</label>
-        <input formControlName="WorkEmail" class="form-control" />
+        <input formControlName="WorkEmail" class="form-control" placeholder="Enter Work Email" />
       </div>
       <div class="col-md-4">
         <label>Work Phone</label>
-        <input formControlName="WorkPhone" class="form-control" />
+        <input formControlName="WorkPhone" class="form-control" placeholder="Enter Work Phone" />
       </div>
     </div>
 
     <div class="row mt-2">
       <div class="col-md-4">
         <label>Personal Phone</label>
-        <input formControlName="PersonalPhone" class="form-control" />
+        <input formControlName="PersonalPhone" class="form-control" placeholder="Enter Personal Phone" />
       </div>
       <div class="col-md-4">
         <label>Emergency Contact Name</label>
-        <input formControlName="EmergencyContactName" class="form-control" />
+        <input formControlName="EmergencyContactName" class="form-control" placeholder="Enter Emergency Contact Name" />
       </div>
       <div class="col-md-4">
         <label>Emergency Contact Relationship</label>
-        <input formControlName="EmergencyContactRelationship" class="form-control" />
+        <select formControlName="EmergencyContactRelationship" class="form-control">
+          <option value="">Select Relationship</option>
+          <option>Father</option>
+          <option>Mother</option>
+          <option>Spouse</option>
+          <option>Sibling</option>
+          <option>Friend</option>
+        </select>
       </div>
     </div>
 
     <div class="row mt-2">
       <div class="col-md-4">
         <label>Emergency Contact Number</label>
-        <input formControlName="EmergencyContactNumber" class="form-control" />
+        <input formControlName="EmergencyContactNumber" class="form-control" placeholder="Enter Emergency Contact Number" />
       </div>
     </div>
 
@@ -190,22 +223,25 @@
     <div class="row">
       <div class="col-md-6">
         <label>Current Address</label>
-        <input formControlName="CurrentAddress" class="form-control" />
+        <input formControlName="CurrentAddress" class="form-control" placeholder="Enter Current Address" />
       </div>
       <div class="col-md-6">
         <label>Permanent Address</label>
-        <input formControlName="PermanentAddress" class="form-control" />
+        <input formControlName="PermanentAddress" class="form-control" placeholder="Enter Permanent Address" />
       </div>
     </div>
 
     <div class="row mt-2">
       <div class="col-md-4">
         <label>Country</label>
-        <input formControlName="CountryOfResidence" class="form-control" />
+        <select formControlName="CountryOfResidence" class="form-control">
+          <option value="">Select Country</option>
+          <option *ngFor="let country of countries" [value]="country">{{ country }}</option>
+        </select>
       </div>
       <div class="col-md-4">
         <label>PO Box</label>
-        <input formControlName="PoBox" class="form-control" />
+        <input formControlName="PoBox" class="form-control" placeholder="Enter PO Box" />
       </div>
     </div>
 
@@ -214,36 +250,37 @@
     <div class="row">
       <div class="col-md-4">
         <label>Passport Expiry</label>
-        <input type="date" formControlName="PassportExpiryDate" class="form-control" />
+        <input type="date" formControlName="PassportExpiryDate" class="form-control" (click)="openDatePicker($event)" />
       </div>
       <div class="col-md-4">
         <label>Visa Expiry</label>
-        <input type="date" formControlName="VisaExpiryDate" class="form-control" />
+        <input type="date" formControlName="VisaExpiryDate" class="form-control" (click)="openDatePicker($event)" />
       </div>
       <div class="col-md-4">
         <label>Emirates ID Expiry</label>
-        <input type="date" formControlName="EmiratesIdExpiryDate" class="form-control" />
+        <input type="date" formControlName="EmiratesIdExpiryDate" class="form-control" (click)="openDatePicker($event)" />
       </div>
     </div>
 
     <div class="row mt-2">
       <div class="col-md-4">
         <label>Labour Card Expiry</label>
-        <input type="date" formControlName="LabourCardExpiryDate" class="form-control" />
+        <input type="date" formControlName="LabourCardExpiryDate" class="form-control" (click)="openDatePicker($event)" />
       </div>
       <div class="col-md-4">
         <label>Insurance Expiry</label>
-        <input type="date" formControlName="InsuranceExpiryDate" class="form-control" />
+       <input type="date" formControlName="InsuranceExpiryDate" class="form-control" (click)="openDatePicker($event)" />
       </div>
     </div>
 
-    <!-- Submit -->
+    <!-- Submit Buttons -->
     <div class="mt-4">
-      <button type="submit" style="margin-left: 20px;" class="btn btn-primary">{{ isEdit ? 'Update' : 'Submit' }}</button>
-      <button type="button" style="margin-left: 20px;" class="btn btn-secondary ms-2" (click)="cancel()">Cancel</button>
-      <button type="button" style="margin-left: 20px;" class="btn btn-info ms-2" (click)="saveDraft()">Save Draft</button>
-      <button type="button" style="margin-left: 20px;" class="btn btn-warning ms-2" (click)="clearForm()">Clear</button>
+      <button type="submit" class="btn btn-success" style="margin-left: 20px;">
+        {{ isEdit ? 'Update' : 'Submit' }}
+      </button>
+      <button type="button" class="btn btn-danger ms-2" style="margin-left: 20px;" (click)="cancel()">Cancel</button>
+      <button type="button" class="btn btn-info ms-2" style="margin-left: 20px;" (click)="saveDraft()">Save Draft</button>
+      <button type="button" class="btn btn-warning ms-2" style="margin-left: 20px;" (click)="clearForm()">Clear</button>
     </div>
-
   </form>
 </div>

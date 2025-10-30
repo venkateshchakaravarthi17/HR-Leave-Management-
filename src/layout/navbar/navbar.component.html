@@ -1,17 +1,12 @@
-<nav class="main-header navbar navbar-expand navbar-white navbar-light"> 
+<nav class="main-header navbar navbar-expand navbar-white navbar-light">
   <!-- Left navbar links -->
   <ul class="navbar-nav">
-    <!-- Hamburger menu -->
     <li class="nav-item">
       <a class="nav-link" href="#" role="button" (click)="toggleSidebar()">
-  <i class="fas fa-bars"></i>
-</a>
-
-
-
+        <i class="fas fa-bars"></i>
+      </a>
     </li>
 
-    <!-- Optional left links -->
     <li class="nav-item d-none d-sm-inline-block">
       <a href="#" class="nav-link">Home</a>
     </li>
@@ -21,18 +16,15 @@
   </ul>
 
   <!-- Right navbar links -->
-  <ul class="navbar-nav ms-auto"> <!-- Pushes links to the right -->
-    <!-- Change/Forgot Password -->
-     <!-- <li class="nav-item">
+  <ul class="navbar-nav ms-auto">
+    <li class="nav-item">
       <a class="nav-link" (click)="openChangePassword()" role="button" title="Change Password">
         <i class="fas fa-key"></i> Change Password
       </a>
-    </li>  -->
-
-    <!-- Logout -->
+    </li>
     <li class="nav-item">
       <a class="nav-link" style="margin-right: 20px;" (click)="logout()" role="button" title="Logout">
-        <i class="fas fa-sign-out-alt" ></i> Logout
+        <i class="fas fa-sign-out-alt"></i> Logout
       </a>
     </li>
   </ul>
@@ -43,27 +35,85 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <form #changeForm="ngForm" (ngSubmit)="changePassword(changeForm)">
-        <div class="modal-header">
+        <div class="modal-header bg-secondary text-white">
           <h5 class="modal-title">Change Password</h5>
           <button type="button" class="btn-close" (click)="closeChangePassword()"></button>
         </div>
+
         <div class="modal-body">
+          <!-- Current Password -->
           <div class="form-group mb-3">
             <label>Current Password</label>
-            <input type="password" class="form-control" required [(ngModel)]="currentPassword" name="currentPassword">
+            <input
+              type="password"
+              class="form-control"
+              required
+              [(ngModel)]="currentPassword"
+              name="currentPassword"
+              #currentPass="ngModel"
+            />
+            <div *ngIf="currentPass.invalid && currentPass.touched" class="text-danger small">
+              Current password is required.
+            </div>
           </div>
+
+          <!-- New Password -->
           <div class="form-group mb-3">
             <label>New Password</label>
-            <input type="password" class="form-control" required [(ngModel)]="newPassword" name="newPassword">
+            <input
+              type="password"
+              class="form-control"
+              required
+              minlength="6"
+              [(ngModel)]="newPassword"
+              name="newPassword"
+              #newPass="ngModel"
+              (input)="checkPasswordStrength()"
+            />
+            <div *ngIf="newPass.invalid && newPass.touched" class="text-danger small">
+              New password must be at least 6 characters.
+            </div>
+
+            <!-- Password Strength Meter -->
+            <div class="mt-2">
+              <div class="progress" style="height: 6px;">
+                <div
+                  class="progress-bar"
+                  role="progressbar"
+                  [class.bg-danger]="passwordStrengthText === 'Weak'"
+                  [class.bg-warning]="passwordStrengthText === 'Medium'"
+                  [class.bg-success]="passwordStrengthText === 'Strong'"
+                  [style.width.%]="passwordStrength"
+                ></div>
+              </div>
+              <small class="text-muted">{{ passwordStrengthText }}</small>
+            </div>
           </div>
+
+          <!-- Confirm Password -->
           <div class="form-group mb-3">
             <label>Confirm New Password</label>
-            <input type="password" class="form-control" required [(ngModel)]="confirmPassword" name="confirmPassword">
+            <input
+              type="password"
+              class="form-control"
+              required
+              [(ngModel)]="confirmPassword"
+              name="confirmPassword"
+              #confirmPass="ngModel"
+            />
+            <div *ngIf="confirmPassword && newPassword && confirmPassword !== newPassword" class="text-danger small">
+              Passwords do not match.
+            </div>
           </div>
         </div>
+
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" (click)="closeChangePassword()">Cancel</button>
-          <button type="submit" class="btn btn-primary" [disabled]="loading">
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="loading || changeForm.invalid || confirmPassword !== newPassword"
+          >
             {{ loading ? 'Saving...' : 'Change Password' }}
           </button>
         </div>

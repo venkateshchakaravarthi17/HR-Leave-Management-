@@ -43,6 +43,13 @@ export class EmployeeService {
     );
   }
 
+  exportToExcel(): Observable<Blob> {
+  return this.http.get(`${this.baseUrl}/export-excel`, {
+    responseType: 'blob'
+  });
+}
+
+
   // --- User Profile APIs ---
   getProfile(): Observable<{
     response: { data: EmployeeProfileDTO; }; data: EmployeeProfileDTO 

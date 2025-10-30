@@ -1,0 +1,15 @@
+.user-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
+}
+
+.user-role {
+  margin-top: 4px;
+  font-size: 0.95rem;
+  text-transform: capitalize; /* makes admin -> Admin */
+  color: #d1d1d1;
+  
+}

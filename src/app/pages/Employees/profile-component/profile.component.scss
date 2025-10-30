@@ -16,3 +16,19 @@
 button {
   min-width: 100px;
 }
+
+.compact-info .row {
+  margin-bottom: 4px !important; /* reduce vertical space */
+}
+
+.compact-info .col-sm-3,
+.compact-info .col-sm-9 {
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.compact-info .text-muted {
+  font-weight: 500;
+  color: #6c757d;
+  margin-right: -300px; /* pulls label closer to value */
+}

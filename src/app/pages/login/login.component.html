@@ -10,7 +10,7 @@
       </div>
 
       <div class="card-body login-card-body">
-        <p class="login-box-msg">Log in to start your session</p>
+        <p class="login-box-msg">Fill in below details to Login</p>
 
         <form (ngSubmit)="login()" #loginForm="ngForm">
           <!-- Work Email -->
@@ -55,7 +55,7 @@
                 <label for="remember">Remember Me</label>
               </div>
             </div><br><br>
-            <div class="col-4 float-start" style="margin-right: 90px;">
+            <div class="col-4 float-start" style="margin-left: 150px;">
               <button type="submit" class="btn btn-primary  btn-block">Log In</button>
             </div>
           </div>
@@ -66,8 +66,8 @@
           </div>
         </form><br>
 
-        <a routerLink="/forgot-password">I forgot my password</a><br /><br>
-        <a routerLink="/register" class="text-center">Register a new employee</a>
+        <a routerLink="/forgot-password" style="margin-left: 110px;">I forgot my password</a><br /><br>
+        <a routerLink="/register" style="margin-left: 100px;" class="text-center">Register a new employee</a>
       </div>
     </div>
   </div>

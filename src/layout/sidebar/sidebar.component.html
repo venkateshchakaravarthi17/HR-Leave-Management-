@@ -1,20 +1,25 @@
 <!-- Sidebar -->
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<aside class="main-sidebar sidebar-dark-primary elevation-4" style="width: 400px;">
   <!-- Brand Logo -->
   <a href="/" class="brand-link">
     <img src="assets/img/data1st_logo.png" class="img-fluid rounded" alt="AdminLTE Logo" style="height: 100px; width: 150px; margin-left: 50px; margin-top: 20px;"><br><br>
-    <span class="brand-text font-weight-light"  ><h5>HR Leave Management</h5></span>
+    <span class="brand-text font-weight-light"   ><h5>HR Leave Management</h5></span>
   </a>
 
   <!-- Sidebar -->
-  <div class="sidebar text-center" style="color: #4cb4ac;">
-    <!-- User Panel -->
-    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-      <div class="info">
-        <a href="#" class="d-block" style="font-size: larger; color: white;">{{ userName }}</a>
-        <div class="user-role" style="margin-left: 30px; text-decoration: underline;">{{ userRole }}</div>
+<div class="sidebar text-center" style="color: #4cb4ac;">
+  <!-- User Panel -->
+  <div class="user-panel mt-3 pb-3 mb-3 d-flex flex-column align-items-center">
+    <div class="info text-center">
+      <a href="#" class="d-block text-white fw-bold" style="font-size: larger; text-decoration: none; ">
+        {{ userName }}
+      </a>
+      <div class="user-role text-capitalize" style=" color: #ddd; margin-right: 30px;">
+        {{ userRole }}
       </div>
     </div>
+  </div>
+</div>
 
 
   
@@ -28,7 +33,7 @@
         <li class="nav-item">
           <a routerLink="/dashboard" class="nav-link">
             <i class="nav-icon fas fa-tachometer-alt"></i>
-            <p>Dashboard</p>
+            <p>HR Analytics</p>
           </a>
         </li>
         <li class="nav-item">

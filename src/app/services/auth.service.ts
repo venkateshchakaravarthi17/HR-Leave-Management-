@@ -14,12 +14,15 @@ export interface User {
   name: string;
   role: string;
   email?: string;
-  workEmail?: string;
+  workEmail: string;
   userId?: string; 
 }
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  getLoggedInUserEmail() {
+    throw new Error('Method not implemented.');
+  }
   getUser() {
     throw new Error('Method not implemented.');
   }
@@ -48,19 +51,20 @@ export class AuthService {
     return this.http.post<ApiResponse<any>>(`${this.employeeUrl}/signup`, data);
   }
 
-  // src/app/services/auth.service.ts
+  
 
 
-changePassword(payload: { currentPassword: string; newPassword: string; }) {
+changePassword(payload: { workEmail: string; currentPassword: string; newPassword: string }) {
   const token = this.getToken();
-  return this.http.post<any>(
-    'https://localhost:7150/api/Account/change-password',
+  return this.http.post<ApiResponse<any>>(
+    `${this.accountUrl}/change-password`,
     payload,
     {
       headers: { Authorization: `Bearer ${token}` }
     }
   );
 }
+
 
 
 

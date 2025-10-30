@@ -28,6 +28,29 @@ export class AddEditEmployeeComponent implements OnInit {
   isAdmin = false;
   currentUserId = '';
 
+  countries: string[] = [
+    'Afghanistan','Albania','Algeria','Andorra','Angola','Argentina','Armenia','Australia','Austria','Azerbaijan',
+    'Bahamas','Bahrain','Bangladesh','Barbados','Belarus','Belgium','Belize','Benin','Bhutan','Bolivia',
+    'Bosnia and Herzegovina','Botswana','Brazil','Brunei','Bulgaria','Burkina Faso','Burundi','Cambodia',
+    'Cameroon','Canada','Cape Verde','Central African Republic','Chad','Chile','China','Colombia','Comoros',
+    'Congo','Costa Rica','Croatia','Cuba','Cyprus','Czech Republic','Denmark','Djibouti','Dominica',
+    'Dominican Republic','Ecuador','Egypt','El Salvador','Equatorial Guinea','Eritrea','Estonia','Eswatini',
+    'Ethiopia','Fiji','Finland','France','Gabon','Gambia','Georgia','Germany','Ghana','Greece','Grenada',
+    'Guatemala','Guinea','Guyana','Haiti','Honduras','Hungary','Iceland','India','Indonesia','Iran','Iraq',
+    'Ireland','Israel','Italy','Jamaica','Japan','Jordan','Kazakhstan','Kenya','Kiribati','Kuwait','Kyrgyzstan',
+    'Laos','Latvia','Lebanon','Lesotho','Liberia','Libya','Liechtenstein','Lithuania','Luxembourg','Madagascar',
+    'Malawi','Malaysia','Maldives','Mali','Malta','Mauritania','Mauritius','Mexico','Moldova','Monaco',
+    'Mongolia','Montenegro','Morocco','Mozambique','Myanmar','Namibia','Nauru','Nepal','Netherlands',
+    'New Zealand','Nicaragua','Niger','Nigeria','North Korea','North Macedonia','Norway','Oman','Pakistan',
+    'Palau','Panama','Papua New Guinea','Paraguay','Peru','Philippines','Poland','Portugal','Qatar','Romania',
+    'Russia','Rwanda','Saint Kitts and Nevis','Saint Lucia','Saint Vincent and the Grenadines','Samoa',
+    'San Marino','Saudi Arabia','Senegal','Serbia','Seychelles','Sierra Leone','Singapore','Slovakia',
+    'Slovenia','Solomon Islands','Somalia','South Africa','South Korea','Spain','Sri Lanka','Sudan','Suriname',
+    'Sweden','Switzerland','Syria','Taiwan','Tajikistan','Tanzania','Thailand','Togo','Tonga','Trinidad and Tobago',
+    'Tunisia','Turkey','Turkmenistan','Tuvalu','Uganda','Ukraine','United Arab Emirates','United Kingdom',
+    'United States','Uruguay','Uzbekistan','Vanuatu','Vatican City','Venezuela','Vietnam','Yemen','Zambia','Zimbabwe'
+  ];
+
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -41,6 +64,18 @@ export class AddEditEmployeeComponent implements OnInit {
     this.currentUserId = this.authService.getCurrentUser()?.userId || '';
 
     this.initForm();
+
+    // Dynamic validation: Show NumberOfChildren only for Married/Widowed/Divorced
+    this.form.get('MaritalStatus')?.valueChanges.subscribe(status => {
+      const childrenControl = this.form.get('NumberOfChildren');
+      if (['Married', 'Widowed', 'Divorced'].includes(status)) {
+        childrenControl?.setValidators([Validators.required, Validators.min(0)]);
+      } else {
+        childrenControl?.clearValidators();
+        childrenControl?.setValue('');
+      }
+      childrenControl?.updateValueAndValidity();
+    });
 
     this.employeeId = this.route.snapshot.paramMap.get('id');
 
@@ -69,11 +104,11 @@ export class AddEditEmployeeComponent implements OnInit {
       EmployeeName: ['', Validators.required],
       Password: ['', this.isEdit ? [] : [Validators.required]],
       ConfirmPassword: ['', this.isEdit ? [] : [Validators.required]],
-      EmployeeRole: [{ value: 'Employee', disabled: !this.isAdmin }, Validators.required],
+      EmployeeRole: [{ value: '', disabled: !this.isAdmin }, Validators.required],
       IsActive: [true],
       CreatedBy: ['admin'],
-      Status: ['InActive', Validators.required],
-      EmploymentType: ['FTE'],
+      Status: ['', Validators.required],
+      EmploymentType: [''],
       ContractBy: [''],
       ContractEndDate: [''],
       WorkLocation: [''],
@@ -81,6 +116,7 @@ export class AddEditEmployeeComponent implements OnInit {
       Nationality: [''],
       DateOfBirth: [''],
       MaritalStatus: [''],
+      NumberOfChildren: [''],
       EmiratesIdNumber: [''],
       PassportNumber: [''],
       JobTitle: [''],
@@ -125,6 +161,7 @@ export class AddEditEmployeeComponent implements OnInit {
         Nationality: emp.nationality,
         DateOfBirth: emp.dateOfBirth || '',
         MaritalStatus: emp.maritalStatus,
+        NumberOfChildren: emp.numberOfChildren || '',
         EmiratesIdNumber: emp.emiratesIdNumber,
         PassportNumber: emp.passportNumber,
         JobTitle: emp.jobTitle,
@@ -156,6 +193,7 @@ export class AddEditEmployeeComponent implements OnInit {
     });
   }
 
+  /** ✅ Includes NumberOfChildren in backend payload */
   private buildPayload(): any {
     const f = this.form.value;
     const payload: any = {
@@ -173,6 +211,7 @@ export class AddEditEmployeeComponent implements OnInit {
       Nationality: f.Nationality,
       DateOfBirth: f.DateOfBirth || undefined,
       MaritalStatus: f.MaritalStatus,
+      NumberOfChildren: f.NumberOfChildren, 
       EmiratesIdNumber: f.EmiratesIdNumber,
       PassportNumber: f.PassportNumber,
       JobTitle: f.JobTitle,
@@ -206,6 +245,13 @@ export class AddEditEmployeeComponent implements OnInit {
 
     Object.keys(payload).forEach(k => payload[k] === undefined && delete payload[k]);
     return payload;
+  }
+
+  openDatePicker(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input && 'showPicker' in input) {
+      input.showPicker();
+    }
   }
 
   onSubmit(): void {
@@ -270,6 +316,6 @@ export class AddEditEmployeeComponent implements OnInit {
   }
 
   cancel(): void {
-    this.router.navigate(['/employees/list']); 
+    this.router.navigate(['/employees/list']);
   }
 }

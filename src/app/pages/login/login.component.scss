@@ -10,6 +10,7 @@
 
 .login-box {
   width: 460px;  
+  
 }
 
 .card {
@@ -33,6 +34,7 @@
   text-decoration: none;
   display: inline-block;
   line-height: 1.3;
+
 }
 
 .login-card-body {
@@ -41,8 +43,49 @@
 
 .login-box-msg {
   font-size: 20px;
+  
 }
 
 .icheck-primary input[type="checkbox"] {
   margin-right: 5px;
+  
+}
+
+/* Make input fields compact and consistent */
+.form-control {
+  height: 42px; /* input height */
+  font-size: 0.95rem;
+  padding: 0.5rem 0.75rem;
+  border-right: none;
+}
+
+/* Icon box styling */
+.input-group-text {
+  background-color: #f8f9fa;
+  border: 1px solid #ced4da;
+  color: #495057;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px; /* make it same height as input */
+  height: 42px; /* match input height */
+  padding: 0; /* center icon perfectly */
+}
+
+/* Bigger icon size */
+.input-group-text span {
+  font-size: 1.2rem; /* increase icon size */
+  line-height: 1; /* prevent vertical misalignment */
+}
+
+/* Keep consistent focus look */
+.form-control:focus {
+  box-shadow: none;
+  border-color: #80bdff;
+}
+
+/* Adjust button for matching height and neat look */
+.btn {
+  height: 42px;
+  font-size: 0.95rem;
 }
